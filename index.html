@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PerfectQing</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            background:rgba(2, 0, 131, 0.137);
+        }
+        div{
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+        }
+        .rect{
+            margin-top: 20px;
+            width: 250px;
+            height: 250px;
+            border-radius: 10px;
+            background-color: rgb(218, 231, 220);
+        }
+        .day{
+            height: 70px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            background-color: rgb(19, 128, 179);
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            color: rgb(255, 255, 255);
+            font-size: 35px;
+        }
+        .ssday{
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+            display: flex;
+            color: steelblue;
+            font-size: 125px;
+        }
+        .Today{
+            margin-top: 30px;
+            font-size: 30px;
+            color: tomato;
+        }
+        .welcome{
+            margin-top: 20px;
+            font-size: 30px;
+            color: teal;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class = "welcome">
+        Welcome to my GitHub
+    </div>
+    <div class="rect">
+        <div id = "sd" class="day">
+            星期日
+        </div>
+        <div class = "ssday" id = "nd">
+            1
+        </div>
+    </div>
+    <div class="Today" id="td">
+        sha
+    </div>
+    <script>
+        var day = new Date().getDay();
+        var sd;
+        switch (day) {
+            case 1: sd = "星期一"; break;
+            case 2: sd = "星期二"; break;
+            case 3: sd = "星期三"; break;
+            case 4: sd = "星期四"; break;
+            case 5: sd = "星期五"; break;
+            case 6: sd = "星期六"; break;
+            case 7: sd = "星期日"; break;
+        }
+        document.getElementById("sd").innerHTML = sd;
+        document.getElementById("nd").innerHTML = new Date().getDate();
+        setInterval(() => {
+                document.getElementById("td").innerHTML = new Date();
+            }, 500);
+    </script>
+</body>
+</html>
