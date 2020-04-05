@@ -12,12 +12,14 @@
         }
 
         body {
+            background-image: url("1.jpg");
+            background-size: cover;
+            background-attachment: fixed;
             justify-content: center;
             align-items: center;
             text-align: center;
             display: flex;
             flex-direction: column;
-            background: #37474f;
             display: list-item;
         }
 
@@ -29,10 +31,10 @@
 
         .date {
             width: auto;
-            margin: 20px 0 20px 0;
+            margin: 20px 0 20px 0px;
             padding: 20px;
             display: flex;
-            background-color: #00838f33;
+            background-color: #00838f00;
         }
 
         .rect {
@@ -81,7 +83,56 @@
         }
 
         .date:hover {
-            background: #37474f;
+            background: #ffffff21;
+        }
+
+        button {
+            outline: none;
+            color: rgb(0, 83, 116);
+            background-color: rgba(255, 255, 255, 0.096);
+            font-size: 30px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+            border: none;
+            padding: 10px 25px;
+            width: 250px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        button span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+        button span:after {
+            content: '»';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
+
+        button:hover span {
+            padding-right: 25px;
+        }
+
+        button:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+
+        button:hover {
+            background-color: hsla(0, 0%, 100%, .4);
+            box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .bt {
+            margin-top: 20px;
         }
     </style>
 
@@ -104,6 +155,10 @@
     <div class="Today" id="td">
 
     </div>
+    <div class="bt">
+        <button onclick="change()"><span>切换背景</span></button>
+    </div>
+
     <script>
         var day = new Date().getDay();
         var sd;
@@ -122,6 +177,15 @@
             setInterval(() => {
                 document.getElementById("td").innerHTML = new Date();
             }, 500);
+        }
+        var str1 = "1.jpg";
+        var str2 = "2.jpg";
+        var i = 1;
+
+        function change() {
+            i *= -1;
+            if (i == -1) document.body.style = "background-image: url(" + str1 + ");";
+            if (i == 1) document.body.style = "background-image: url(" + str2 + ");";
         }
     </script>
 </body>
