@@ -24,11 +24,14 @@ a {
 
 a:visited{
     color: #ffffff;
+    text-decoration: none;
 }
 a:hover{
     cursor: pointer;
-    color: #ffb74d
+    color: #ffb74d;
+    text-decoration: none;
 }
+
 ul {
     list-style: none;
     margin-left: 60px;
@@ -63,6 +66,7 @@ h1 {
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding:20px 30px;
 
 }
 .active {
