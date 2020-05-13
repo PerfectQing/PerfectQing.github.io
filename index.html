@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/stylehome.css">
 </head>
 
 <body>
@@ -20,8 +21,112 @@
         </ul>
     </div>
     <div class="mainContent">
-        <h1>Welcome to my GitHub</h1>
-        
+        <div class="window">
+            <!-- <img src="./bg.jpg" alt=""> -->
+            <div class="table">
+                <div class="bg">
+                    <p>当前时间</p>
+                    <h1 id="tt">时间</h1>
+                    <p id="dt">日期</p>
+                    <p>已专注时间</p>
+                    <h1 id="tt2">时间</h1>
+                    <button id="bt1" onclick="time2()" class="">开始</button>
+                    <button id="bt2" onclick="init()" class="none">置零</button>
+                    <h5>Design For Myself</h5>
+                </div>
+            </div>
+            <script>
+                var timecc = 0;
+                function time2() {
+                    timecc = new Date();
+                    document.getElementById('bt2').className="";
+                    document.getElementById('bt1').className="none";
+                }
+                function init() {
+                    timecc = 0;
+                    document.getElementById('bt1').className="";
+                    document.getElementById('bt2').className="none";
+    
+                }
+                function time() {
+                    
+                    var date = new Date();
+                    var second = date.getSeconds();
+                    var hour = date.getHours();
+                    var min = date.getMinutes();
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    var day = date.getDate();
+                    if (hour >= 0 && hour <= 9) {
+                        hour = '0' + hour;
+                    }
+                    if (min >= 0 && min <= 9) {
+                        min = '0' + min;
+                    }
+                    if (second >= 0 && second <= 9) {
+                        second = '0' + second;
+                    }
+                    var ss ='';
+                    var s2, h2, m2;
+                    if(timecc == 0) {
+                        s2 = "0";
+                        h2 = "0";
+                        m2 = "0";
+                    }
+                    else {
+                        ss = Math.ceil((date - timecc)/ 1000);
+                        s2 = parseInt(ss % 60 ) ;
+                        m2 = parseInt(ss / 60 % 60);
+                        h2 = parseInt(ss / 60 / 60);
+                    }
+                    if (h2 >= 0 && h2 <= 9) {
+                        h2 = '0' + h2;
+                    }
+                    if (m2 >= 0 && m2 <= 9) {
+                        m2 = '0' + m2;
+                    }
+                    if (s2 >= 0 && s2 <= 9) {
+                        s2 = '0' + s2;
+                    }
+                    document.getElementById('tt').innerHTML = hour + ':' + min + ':' + second;
+                    document.getElementById('dt').innerHTML = year + '年' + month + '月' + day + '日';
+                    document.getElementById('tt2').innerHTML = h2 + ':' + m2 + ':'  + s2;
+                }
+                time();
+                setInterval("time()", 1000);
+                
+    
+    
+                var i = 1;
+                function showlove() {
+                    if (i == 1) {
+                        document.getElementById('love').className = "none"
+                        i *= -1;
+                    } else {
+                        document.getElementById('love').className = ""
+                        i *= -1;
+                    }
+                }
+                var str = "在一起";
+    
+                window.setTimeout("share_data_time()", 1000);
+                //毕业时间
+                BirthDay = new Date("4/1/2018 00:00:00");
+                //获取当前时间
+                today = new Date();
+                timeold = (today.getTime() - BirthDay.getTime()); //总豪秒数
+                secondsold = Math.floor(timeold / 1000);          //总秒数
+                e_daysold = timeold / (24 * 60 * 60 * 1000);
+                daysold = Math.floor(e_daysold);                 //相差天数
+                e_hrsold = (e_daysold - daysold) * 24;
+                hrsold = Math.floor(e_hrsold);                   //相差小时数
+                e_minsold = (e_hrsold - hrsold) * 60;
+                minsold = Math.floor(e_minsold)                   //相差分钟数
+                seconds = Math.floor((e_minsold - minsold) * 60);  //相差秒数
+                //将所获取的时间拼接到一起，再把值显示到页面
+                setInterval("document.getElementById('sbTitle').innerHTML= str+'💖'+daysold.toString()+'💖天啦';", 1000);
+            </script>
+        </div>
     </div>
     <div class="footer">
 
