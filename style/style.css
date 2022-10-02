@@ -16,6 +16,21 @@ div {
     display: block;
 }
 
+@font-face{
+    font-family: Digital;
+    src: url("fonts/Digital.ttf");
+}
+
+#tt {
+    font-family: 'Digital';
+    letter-spacing: 10px;
+}
+#tt2 {
+    font-family: 'Digital';
+    letter-spacing: 10px;
+    
+}
+
 a {
     text-decoration: none;
     display: block;
