@@ -6,8 +6,10 @@
 body {
     height: 100vh;
     font-family: Arial, Helvetica, sans-serif;
-    background: #374046;
+    /* 青绿色渐变背景，扁平化风格 */
+    background: linear-gradient(135deg, #1de9b6 0%, #1dc8e9 100%);
 }
+
 body, h2, h3, h4 {
     font-family: Roboto,Helvetica Neue,Helvetica,Arial,sans-serif;
     font-weight: 300;
@@ -24,26 +26,28 @@ div {
 #tt {
     font-family: 'Digital';
     letter-spacing: 10px;
+    color: #21cb90; /* 强化数字的青绿色感 */
 }
 #tt2 {
     font-family: 'Digital';
     letter-spacing: 10px;
-    
+    color: #1dc8e9;
 }
 
 a {
     text-decoration: none;
     display: block;
-    color: #ffffff;
+    color: #fff;
+    transition: color 0.2s;
 }
 
 a:visited{
-    color: #ffffff;
+    color: #fff;
     text-decoration: none;
 }
 a:hover{
     cursor: pointer;
-    color: #ffb74d;
+    color: #00ffc6;
     text-decoration: none;
 }
 
@@ -52,28 +56,35 @@ ul {
     margin-left: 60px;
 }
 li {
-    color: #ffb74d;
+    color: #00bfae;
     display: inline-block;
     padding: 20px 25px 15px 25px;
     border-bottom: 4px solid #ffffff00;
+    transition: border 0.2s, color 0.2s;
+    font-weight: 500;
+    font-size: 1.1em;
 }
 li:hover{
     cursor: pointer;
-    border-bottom: 4px solid #ffb74d;
+    border-bottom: 4px solid #1de9b6;
+    color: #00bfae;
+    background: rgba(29, 233, 182, 0.1);
+    border-radius: 6px 6px 0 0;
 }
-
 h1 {
     font-family: 'Courier New', Courier, monospace;
+    color: #0097a7;
 }
 
 .header {
-    background: #2586a65e;
+    /* 青绿色渐变、扁平化 */
+    background: linear-gradient(90deg, #1de9b6 0%, #1dc8e9 100%);
     font-size: 13pt;
     width: 100%;
     min-height: 60px;
     z-index: 16;
-    background-color: #3e464c;
     position: relative;
+    box-shadow: none; /* 扁平化无阴影 */
 }
 
 .mainContent {
@@ -82,22 +93,62 @@ h1 {
     align-items: center;
     text-align: center;
     padding:20px 30px;
-
+    background: rgba(255,255,255,0.06);
+    border-radius: 14px;
+    margin-top: 24px;
+    box-shadow: none;
 }
+
 .active {
-    border-bottom: 4px solid #ffb74d;
+    border-bottom: 4px solid #1dc8e9;
+    background: rgba(29, 200, 233, 0.10);
+    border-radius: 6px 6px 0 0;
 }
 .active a {
-    color: #ffb74d;
+    color: #1dc8e9;
 }
-
 
 .content {
     max-width: 1060px;
     margin: 0 auto;
 }
+
 .colors {
     position: relative;
     background: #fff;
     margin: 30px 0;
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+/* 进一步年轻化按钮样式（如有按钮） */
+button, .btn {
+    background: linear-gradient(90deg, #1de9b6 0%, #1dc8e9 100%);
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 32px;
+    font-size: 1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: none;
+}
+
+button:hover, .btn:hover {
+    background: linear-gradient(90deg, #1dc8e9 0%, #1de9b6 100%);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(29, 200, 233, 0.08);
+}
+
+/* 可选：输入框等也年轻化 */
+input, textarea {
+    border: 1.5px solid #1de9b6;
+    border-radius: 8px;
+    padding: 8px 12px;
+    outline: none;
+    transition: border 0.2s;
+}
+input:focus, textarea:focus {
+    border-color: #1dc8e9;
 }
