@@ -1,573 +1,402 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>学生课表查询 </title>
-    <link href="./school_table_files/Styles.css" type="text/css" rel="stylesheet">
-    <link rel="stylesheet" href="layui.css">
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>学生课表查询</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 引入Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" href="course.png">
-</head>
-
-<body ms_positioning="GridLayout">
-
-    <table style="WIDTH: 100%" cellspacing="0" cellpadding="0" border="0" class="layui-table">
-        <tbody>
-            <tr>
-                <td style="HEIGHT: 85px" valign="middle" align="center" colspan="2">
-                    <span id="lbltitle">
-                        <b><u>2020-2021第一学期学生个人课表</u></b>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td align="left" colspan="2">
-                    <font face="宋体">&nbsp;&nbsp;&nbsp;&nbsp; </font>
-                    <a href="../index.html"><span id="lblskrq"><b>返回
-                            </b></span></a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table id="Table2" cellspacing="0" cellpadding="0" width="95%" align="center" border="0" class="layui-table">
-        <tbody>
-            <tr>
-                <td valign="top" colspan="3">
-                    <table class="GridBackColor" cellspacing="0" rules="all" bordercolor="#9CD7FF" border="1"
-                        id="DataGrid1" bgcolor="White" width="100%">
-                        <tbody>
-                            <tr class="title_row">
-                                <td>&nbsp;<br><br></td>
-                                <td>节次</td>
-                                <td>星期一</td>
-                                <td>星期二</td>
-                                <td>星期三</td>
-                                <td>星期四</td>
-                                <td>星期五</td>
-                                <td>星期六</td>
-                                <td>星期日</td>
-                            </tr>
-                            <tr nowrap="nowrap">
-                                <td rowspan="5">上午</td>
-                                <td align="center">1&nbsp;&nbsp;&nbsp;8:00-8:45</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr nowrap="nowrap">
-                                <td align="Center">2&nbsp;&nbsp;&nbsp;8:55-9:40</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr nowrap="nowrap">
-                                <td align="Center">3&nbsp;&nbsp;&nbsp;9:55-10:40</td>
-                                <td>
-                                </td>
-                                <td rowspan="2">
-                                    <p>课程:机器学习<br>班级:计算机20班<br>(教室:C6-409)<br>第1-16;<br>主讲教师:张战成</p>
-                                </td>
-                                <td rowspan="2">
-                                    <p>课程:高等数理统计<br>班级:计算机20班<br>(教室:C6-407)<br>第1-16;<br>主讲教师:徐常青</p>
-                                </td>
-                                <td rowspan="2">
-                                    <p>课程:云计算与大数据技术<br>班级:计算机20班<br>(教室:电子楼C201)<br>第1-16;<br>主讲教师:陆悠</p>
-                                </td>
-                                <td rowspan="2">
-                                    <p>课程:自然辩证法概论<br>班级:20研石湖电子、化生班<br>(教室:石湖C5-205)<br>第1-8;<br>主讲教师:姚新立</p>
-                                </td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr nowrap="nowrap">
-                                <td align="Center">4&nbsp;&nbsp;&nbsp;10:50-11:35</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr nowrap="nowrap">
-                                <td align="Center" width="20">5&nbsp;&nbsp;&nbsp;11:45-12:30</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr nowrap="nowrap">
-                                <td align="Center" rowspan="5" width="20">下午</td>
-                                <td align="Center" width="20">6&nbsp;&nbsp;&nbsp;12:40-13:25</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr nowrap="nowrap">
-                                <td align="Center" width="20">7&nbsp;&nbsp;&nbsp;13:35-14:20</td>
-                                <td>&nbsp;</td>
-                                <td rowspan="2">
-                                    <p>课程:科技论文写作<br>班级:计算机20班、建筑智能化技术20班<br>(教室:石湖C6-407)<br>第1-8;<br>主讲教师:吴征天</p>
-                                </td>
-                                <td>&nbsp;</td>
-                                <td rowspan="2">
-                                    <p>课程:强化学习理论与应用<br>班级:计算机20班<br>(教室:电子楼A201)<br>第1-16;<br>主讲教师:傅启明</p>
-                                </td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr nowrap="nowrap">
-                                <td align="Center" width="20">8&nbsp;&nbsp;&nbsp;14:30-15:15</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr nowrap="nowrap">
-                                <td align="Center" width="20">9&nbsp;&nbsp;&nbsp;15:25-16:10</td>
-                                <td>&nbsp;</td>
-                                <td rowspan="2">
-                                    <p>课程:基础英语（二）<br>班级:20研石湖计算机、哲学班<br>(教室:石湖C6-407)<br>第1-16;<br>主讲教师:冯滢</p>
-                                </td>
-                                <td rowspan="2">
-                                    <p>课程:数学建模<br>班级:数学建模1班<br>(教室:石湖C5-204)<br>第1-16;<br>主讲教师:朱建青</p>
-                                </td>
-                                <td>&nbsp;</td>
-                                <td rowspan="2">
-                                    <p>课程:基础英语（二）<br>班级:20研石湖计算机、哲学班<br>(教室:石湖C6-407)<br>第1-16;<br>主讲教师:冯滢</p>
-                                </td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr nowrap="nowrap">
-                                <td align="Center" width="20">10&nbsp;&nbsp;&nbsp;16:20-17:05</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr nowrap="nowrap">
-                                <td rowspan="5" width="20">晚上</td>
-                                <td>11&nbsp;&nbsp;&nbsp;17:15-18:00</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>12&nbsp;&nbsp;&nbsp;18:10-18:55</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>13&nbsp;&nbsp;&nbsp;19:05-19:50</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>14&nbsp;&nbsp;&nbsp;20:00-20:45</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td>15&nbsp;&nbsp;&nbsp;20:55-21:40</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
-        <legend>时间点</legend>
-    </fieldset>
-    <table class="layui-table" lay-even="" lay-skin="row" style="width: 600; margin: 15px 17px;">
-        <colgroup>
-            <col width="150">
-            <col width="150">
-            <col width="150">
-            <col width="">
-        </colgroup>
-        <thead>
-            <tr style="background-color: #C8E1FB;">
-                <td id="tt"></td>
-                <td>上午</td>
-                <td>下午</td>
-                <td>晚上</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>第一节课</td>
-                <td id="cl1">8:00-8:45</td>
-                <td id="cl6">12:40-13:25</td>
-                <td id="cl11">17:15-18:00</td>
-            </tr>
-            <tr>
-                <td>第二节课</td>
-                <td id="cl2">8:55-9:40</td>
-                <td id="cl7">13:35-14:20</td>
-                <td id="cl12">18:10-18:55</td>
-            </tr>
-            <tr>
-                <td>第三节课</td>
-                <td id="cl3">9:55-10:40</td>
-                <td id="cl8">14:30-15:15</td>
-                <td id="cl13">19:05-19:50</td>
-            </tr>
-            <tr>
-                <td>第四节课</td>
-                <td id="cl4">10:50-11:35</td>
-                <td id="cl9">15:25-16:10</td>
-                <td id="cl14">20:00-20:45</td>
-            </tr>
-            <tr>
-                <td>第五节课</td>
-                <td id="cl5">11:45-12:30</td>
-                <td id="cl10">16:20-17:05</td>
-                <td id="cl15">20:55-21:40</td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="window" style="display: none;">
-        <!-- <img src="./bg.jpg" alt=""> -->
-        <div class="table">
-            <div class="bg">
-                <p>当前时间</p>
-                <h1 id="tt">时间</h1>
-                <p id="dt">日期</p>
-                <p>已专注时间</p>
-                <h1 id="tt2">时间</h1>
-                <button id="bt1" onclick="time2()" class="">开始</button>
-                <button id="bt2" onclick="init()" class="none">置零</button>
-                <h5>Design For Myself</h5>
-                <a href="school_table.html">school timetable</a>
-                <a href="learning.html">Learning_Lists</a>
-            </div>
-        </div>
-        <script>
-            var timecc = 0;
-            function time2() {
-                timecc = new Date();
-                document.getElementById('bt2').className = "";
-                document.getElementById('bt1').className = "none";
-            }
-            function init() {
-                timecc = 0;
-                document.getElementById('bt1').className = "";
-                document.getElementById('bt2').className = "none";
-
-            }
-            function time() {
-
-                var date = new Date();
-                var second = date.getSeconds();
-                var hour = date.getHours();
-                var min = date.getMinutes();
-                var year = date.getFullYear();
-                var month = date.getMonth() + 1;
-                var day = date.getDate();
-                if (hour == 8) {
-                    if (min <= 45) {
-                        document.getElementById('cl1').className = "current_class";
-                    }
-                    else if (min >= 55) {
-                        document.getElementById('cl2').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl1').className = "";
-                        document.getElementById('cl2').className = "";
-                    }
-                }
-                if (hour == 9) {
-                    if (min <= 40) {
-                        document.getElementById('cl2').className = "current_class";
-                    }
-                    else if (min >= 55) {
-                        document.getElementById('cl3').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl2').className = "";
-                        document.getElementById('cl3').className = "";
-                    }
-                }
-                if (hour == 10) {
-                    if (min <= 40) {
-                        document.getElementById('cl3').className = "current_class";
-                    }
-                    else if (min >= 50) {
-                        document.getElementById('cl4').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl4').className = "";
-                        document.getElementById('cl3').className = "";
-                    }
-                }
-                if (hour == 11) {
-                    if (min <= 35) {
-                        document.getElementById('cl4').className = "current_class";
-                    }
-                    else if (min >= 45) {
-                        document.getElementById('cl5').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl4').className = "";
-                        document.getElementById('cl5').className = "";
-                    }
-                }
-
-                if (hour == 12) {
-                    if (min <= 30) {
-                        document.getElementById('cl5').className = "current_class";
-                    }
-                    else if (min >= 40) {
-                        document.getElementById('cl6').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl6').className = "";
-                        document.getElementById('cl5').className = "";
-                    }
-                }
-
-                if (hour == 13) {
-                    if (min <= 25) {
-                        document.getElementById('cl6').className = "current_class";
-                    }
-                    else if (min >= 35) {
-                        document.getElementById('cl7').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl6').className = "";
-                        document.getElementById('cl7').className = "";
-                    }
-                }
-
-                if (hour == 14) {
-                    if (min <= 20) {
-                        document.getElementById('cl7').className = "current_class";
-                    }
-                    else if (min >= 30) {
-                        document.getElementById('cl8').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl7').className = "";
-                        document.getElementById('cl8').className = "";
-                    }
-                }
-
-                if (hour == 15) {
-                    if (min <= 15) {
-                        document.getElementById('cl8').className = "current_class";
-                    }
-                    else if (min >= 25) {
-                        document.getElementById('cl9').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl9').className = "";
-                        document.getElementById('cl8').className = "";
-                    }
-                }
-
-                if (hour == 16) {
-                    if (min <= 10) {
-                        document.getElementById('cl9').className = "current_class";
-                    }
-                    else if (min >= 20) {
-                        document.getElementById('cl10').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl9').className = "";
-                        document.getElementById('cl10').className = "";
-                    }
-                }
-
-                if (hour == 17) {
-                    if (min <= 5) {
-                        document.getElementById('cl10').className = "current_class";
-                    }
-                    else if (min >= 15) {
-                        document.getElementById('cl11').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl10').className = "";
-                        document.getElementById('cl11').className = "";
-                    }
-                }
-
-                if (hour == 18) {
-                    if (min >= 10 && min <= 55) {
-                        document.getElementById('cl12').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl12').className = "";
-                    }
-                }
-
-                if (hour == 19) {
-                    if (min >= 5 && min <= 50) {
-                        document.getElementById('cl13').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl13').className = "";
-                    }
-                }
-
-                if (hour == 20) {
-                    if (min <= 45) {
-                        document.getElementById('cl14').className = "current_class";
-                    }
-                    else if (min >= 55) {
-                        document.getElementById('cl15').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl14').className = "";
-                        document.getElementById('cl15').className = "";
-                    }
-                }
-
-                if (hour == 21) {
-                    if (min <= 40) {
-                        document.getElementById('cl15').className = "current_class";
-                    }
-                    else {
-                        document.getElementById('cl15').className = "";
-                    }
-                }
-
-
-
-
-
-
-
-
-
-                if (hour >= 0 && hour <= 9) {
-                    hour = '0' + hour;
-                }
-                if (min >= 0 && min <= 9) {
-                    min = '0' + min;
-                }
-                if (second >= 0 && second <= 9) {
-                    second = '0' + second;
-                }
-                var ss = '';
-                var s2, h2, m2;
-                if (timecc == 0) {
-                    s2 = "0";
-                    h2 = "0";
-                    m2 = "0";
-                }
-                else {
-                    ss = Math.ceil((date - timecc) / 1000);
-                    s2 = parseInt(ss % 60);
-                    m2 = parseInt(ss / 60 % 60);
-                    h2 = parseInt(ss / 60 / 60);
-                }
-                if (h2 >= 0 && h2 <= 9) {
-                    h2 = '0' + h2;
-                }
-                if (m2 >= 0 && m2 <= 9) {
-                    m2 = '0' + m2;
-                }
-                if (s2 >= 0 && s2 <= 9) {
-                    s2 = '0' + s2;
-                }
-                document.getElementById('tt').innerHTML = hour + ':' + min + ':' + second;
-                document.getElementById('dt').innerHTML = year + '年' + month + '月' + day + '日';
-                document.getElementById('tt2').innerHTML = h2 + ':' + m2 + ':' + s2;
-            }
-            time();
-            setInterval("time()", 1000);
-
-
-
-            var i = 1;
-            function showlove() {
-                if (i == 1) {
-                    document.getElementById('love').className = "none"
-                    i *= -1;
-                } else {
-                    document.getElementById('love').className = ""
-                    i *= -1;
-                }
-            }
-            var str = "在一起";
-
-            window.setTimeout("share_data_time()", 1000);
-            //毕业时间
-            BirthDay = new Date("4/1/2018 00:00:00");
-            //获取当前时间
-            today = new Date();
-            timeold = (today.getTime() - BirthDay.getTime()); //总豪秒数
-            secondsold = Math.floor(timeold / 1000);          //总秒数
-            e_daysold = timeold / (24 * 60 * 60 * 1000);
-            daysold = Math.floor(e_daysold);                 //相差天数
-            e_hrsold = (e_daysold - daysold) * 24;
-            hrsold = Math.floor(e_hrsold);                   //相差小时数
-            e_minsold = (e_hrsold - hrsold) * 60;
-            minsold = Math.floor(e_minsold)                   //相差分钟数
-            seconds = Math.floor((e_minsold - minsold) * 60);  //相差秒数
-            //将所获取的时间拼接到一起，再把值显示到页面
-            setInterval("document.getElementById('sbTitle').innerHTML= str+'💖'+daysold.toString()+'💖天啦';", 1000);
-        </script>
-    </div>
-    <div>
-        <img style="width: 100%;" src="./School-calendar.png" alt="">
-    </div>
-    <div>
-        <img style="width: 100%;" src="./requirement.png" alt="">
-    </div>
-    <script language="javascript">
-        function selDs() {
-            var thisdate = new Date();
-            var thistime = thisdate.getTime();
-            window.open("../webcontrol/seljs.aspx?type=1&click=1&id=" + thisdate + thistime, "选择任课教师", "toolbar=no,status=no,resizable=no,scrollbars= no")
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(120deg, #6a82fb 0%, #fc5c7d 100%);
+            --secondary-gradient: linear-gradient(120deg, #43cea2 0%, #185a9d 100%);
+            --card-bg: #fff;
+            --header-bg: #fff6f6ee;
+            --border-radius: 18px;
+            --shadow: 0 4px 20px 0 rgba(44,62,80,.07);
+            --text-main: #222;
+            --text-sub: #666;
+            --table-header-bg: #f9fafb;
+            --table-row-even: #f6f8fa;
+            --accent: #6a82fb;
         }
+        body {
+            min-height: 100vh;
+            background: var(--primary-gradient);
+            font-family: 'Roboto', 'Microsoft YaHei', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+        }
+        .container {
+            max-width: 950px;
+            margin: 40px auto 30px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 32px 24px 32px 24px;
+        }
+        .header-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #fff;
+            background: var(--accent);
+            padding: 6px 22px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px 0 rgba(106, 130, 251, .14);
+            transition: background .2s;
+        }
+        .back-link:hover {
+            background: #fc5c7d;
+        }
+        .timetable-card {
+            background: var(--header-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px 16px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 1rem;
+        }
+        th, td {
+            padding: 12px 10px;
+            border: none;
+            text-align: center;
+        }
+        thead th {
+            background: var(--table-header-bg);
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.04rem;
+        }
+        tbody tr:nth-child(even) {
+            background: var(--table-row-even);
+        }
+        .section-title {
+            font-size: 1.22rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 36px 0 12px 0;
+        }
+        .class-info {
+            font-size: 0.98rem;
+            line-height: 1.7;
+            color: var(--text-sub);
+            background: linear-gradient(90deg,#e3ecff 0%, #fff 100%);
+            border-radius: 10px;
+            padding: 8px 6px;
+            box-shadow: 0 2px 6px rgba(106,130,251,.06);
+        }
+        .current_class {
+            background: linear-gradient(90deg, #fc5c7d 0%, #6a82fb 100%);
+            color: #fff !important;
+            border-radius: 12px;
+            font-weight: 700;
+            box-shadow: 0 2px 12px 0 rgba(252,92,125,.19);
+        }
+        .schedule-table th, .schedule-table td {
+            font-size: 1rem;
+        }
+        /* 时间表样式 */
+        .time-table th, .time-table td {
+            font-size: 0.99rem;
+        }
+        /* 响应式 */
+        @media (max-width: 700px) {
+            .container { padding: 10px 2px; }
+            .timetable-card { padding: 8px 2px; }
+            table { font-size: 0.91rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-title">2020-2021 第一学期学生个人课表</div>
+        <a href="../index.html" class="back-link">返回主页</a>
+
+        <div class="timetable-card">
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>节次</th>
+                        <th>星期一</th>
+                        <th>星期二</th>
+                        <th>星期三</th>
+                        <th>星期四</th>
+                        <th>星期五</th>
+                        <th>星期六</th>
+                        <th>星期日</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="5" style="font-weight:700;">上午</td>
+                        <td>1&nbsp;&nbsp;8:00-8:45</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>2&nbsp;&nbsp;8:55-9:40</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>3&nbsp;&nbsp;9:55-10:40</td>
+                        <td></td>
+                        <td rowspan="2">
+                            <div class="class-info">
+                                课程：专业必修课程A<br>
+                                班级：XX班<br>
+                                教室：教学楼A101<br>
+                                周次：1-16<br>
+                                老师：教师甲
+                            </div>
+                        </td>
+                        <td rowspan="2">
+                            <div class="class-info">
+                                课程：专业选修课程B<br>
+                                班级：XX班<br>
+                                教室：教学楼B203<br>
+                                周次：1-16<br>
+                                老师：教师乙
+                            </div>
+                        </td>
+                        <td rowspan="2">
+                            <div class="class-info">
+                                课程：公共基础课程C<br>
+                                班级：XX班<br>
+                                教室：教学楼C305<br>
+                                周次：1-16<br>
+                                老师：教师丙
+                            </div>
+                        </td>
+                        <td rowspan="2">
+                            <div class="class-info">
+                                课程：通识课程D<br>
+                                班级：XX班<br>
+                                教室：教学楼D407<br>
+                                周次：1-8<br>
+                                老师：教师丁
+                            </div>
+                        </td>
+                        <td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>4&nbsp;&nbsp;10:50-11:35</td>
+                        <td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>5&nbsp;&nbsp;11:45-12:30</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5" style="font-weight:700;">下午</td>
+                        <td>6&nbsp;&nbsp;12:40-13:25</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>7&nbsp;&nbsp;13:35-14:20</td>
+                        <td></td>
+                        <td rowspan="2">
+                            <div class="class-info">
+                                课程：综合素质课程E<br>
+                                班级：XX班<br>
+                                教室：教学楼E502<br>
+                                周次：1-8<br>
+                                老师：教师戊
+                            </div>
+                        </td>
+                        <td></td>
+                        <td rowspan="2">
+                            <div class="class-info">
+                                课程：跨学科课程F<br>
+                                班级：XX班<br>
+                                教室：教学楼F606<br>
+                                周次：1-16<br>
+                                老师：教师己
+                            </div>
+                        </td>
+                        <td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>8&nbsp;&nbsp;14:30-15:15</td>
+                        <td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>9&nbsp;&nbsp;15:25-16:10</td>
+                        <td></td>
+                        <td rowspan="2">
+                            <div class="class-info">
+                                课程：英语课程<br>
+                                班级：XX班<br>
+                                教室：教学楼G701<br>
+                                周次：1-16<br>
+                                老师：教师庚
+                            </div>
+                        </td>
+                        <td rowspan="2">
+                            <div class="class-info">
+                                课程：数理课程<br>
+                                班级：XX班<br>
+                                教室：教学楼H802<br>
+                                周次：1-16<br>
+                                老师：教师辛
+                            </div>
+                        </td>
+                        <td></td>
+                        <td rowspan="2">
+                            <div class="class-info">
+                                课程：英语课程<br>
+                                班级：XX班<br>
+                                教室：教学楼G701<br>
+                                周次：1-16<br>
+                                老师：教师庚
+                            </div>
+                        </td>
+                        <td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>10&nbsp;&nbsp;16:20-17:05</td>
+                        <td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5" style="font-weight:700;">晚上</td>
+                        <td>11&nbsp;&nbsp;17:15-18:00</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>12&nbsp;&nbsp;18:10-18:55</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>13&nbsp;&nbsp;19:05-19:50</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>14&nbsp;&nbsp;20:00-20:45</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>15&nbsp;&nbsp;20:55-21:40</td>
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title">时间点</div>
+        <div class="timetable-card">
+            <table class="time-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>上午</th>
+                        <th>下午</th>
+                        <th>晚上</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>第一节课</td>
+                        <td id="cl1">8:00-8:45</td>
+                        <td id="cl6">12:40-13:25</td>
+                        <td id="cl11">17:15-18:00</td>
+                    </tr>
+                    <tr>
+                        <td>第二节课</td>
+                        <td id="cl2">8:55-9:40</td>
+                        <td id="cl7">13:35-14:20</td>
+                        <td id="cl12">18:10-18:55</td>
+                    </tr>
+                    <tr>
+                        <td>第三节课</td>
+                        <td id="cl3">9:55-10:40</td>
+                        <td id="cl8">14:30-15:15</td>
+                        <td id="cl13">19:05-19:50</td>
+                    </tr>
+                    <tr>
+                        <td>第四节课</td>
+                        <td id="cl4">10:50-11:35</td>
+                        <td id="cl9">15:25-16:10</td>
+                        <td id="cl14">20:00-20:45</td>
+                    </tr>
+                    <tr>
+                        <td>第五节课</td>
+                        <td id="cl5">11:45-12:30</td>
+                        <td id="cl10">16:20-17:05</td>
+                        <td id="cl15">20:55-21:40</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align:center;margin-top:24px;">
+            <img style="width:100%;max-width:720px;border-radius:12px;box-shadow:0 2px 16px rgba(44,62,80,.13);" src="./School-calendar.png" alt="校历">
+        </div>
+        <div style="text-align:center;margin-top:12px;">
+            <img style="width:100%;max-width:720px;border-radius:12px;box-shadow:0 2px 12px rgba(252,92,125,.08);" src="./requirement.png" alt="要求">
+        </div>
+
+    </div>
+    <!-- 保留原有时间高亮 & 计时功能 -->
+    <script>
+        // 保留原有的高亮当前课程时间段功能
+        function updateCurrentClass() {
+            var date = new Date();
+            var hour = date.getHours();
+            var min = date.getMinutes();
+            // 清除所有高亮
+            for (var i = 1; i <= 15; i++) {
+                var cl = document.getElementById('cl'+i);
+                if(cl) cl.className = '';
+            }
+            // 课程高亮逻辑
+            if (hour === 8 && min <= 45) document.getElementById('cl1').className = "current_class";
+            else if (hour === 8 && min >= 55) document.getElementById('cl2').className = "current_class";
+            else if (hour === 9 && min <= 40) document.getElementById('cl2').className = "current_class";
+            else if (hour === 9 && min >= 55) document.getElementById('cl3').className = "current_class";
+            else if (hour === 10 && min <= 40) document.getElementById('cl3').className = "current_class";
+            else if (hour === 10 && min >= 50) document.getElementById('cl4').className = "current_class";
+            else if (hour === 11 && min <= 35) document.getElementById('cl4').className = "current_class";
+            else if (hour === 11 && min >= 45) document.getElementById('cl5').className = "current_class";
+            else if (hour === 12 && min <= 30) document.getElementById('cl5').className = "current_class";
+            else if (hour === 12 && min >= 40) document.getElementById('cl6').className = "current_class";
+            else if (hour === 13 && min <= 25) document.getElementById('cl6').className = "current_class";
+            else if (hour === 13 && min >= 35) document.getElementById('cl7').className = "current_class";
+            else if (hour === 14 && min <= 20) document.getElementById('cl7').className = "current_class";
+            else if (hour === 14 && min >= 30) document.getElementById('cl8').className = "current_class";
+            else if (hour === 15 && min <= 15) document.getElementById('cl8').className = "current_class";
+            else if (hour === 15 && min >= 25) document.getElementById('cl9').className = "current_class";
+            else if (hour === 16 && min <= 10) document.getElementById('cl9').className = "current_class";
+            else if (hour === 16 && min >= 20) document.getElementById('cl10').className = "current_class";
+            else if (hour === 17 && min <= 5) document.getElementById('cl10').className = "current_class";
+            else if (hour === 17 && min >= 15) document.getElementById('cl11').className = "current_class";
+            else if (hour === 18 && min >= 10 && min <= 55) document.getElementById('cl12').className = "current_class";
+            else if (hour === 19 && min >= 5 && min <= 50) document.getElementById('cl13').className = "current_class";
+            else if (hour === 20 && min <= 45) document.getElementById('cl14').className = "current_class";
+            else if (hour === 20 && min >= 55) document.getElementById('cl15').className = "current_class";
+            else if (hour === 21 && min <= 40) document.getElementById('cl15').className = "current_class";
+        }
+        updateCurrentClass();
+        setInterval(updateCurrentClass, 1000);
     </script>
-
-
 </body>
-
 </html>
