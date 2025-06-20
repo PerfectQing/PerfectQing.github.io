@@ -1,62 +1,139 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>PerfectQing | 年轻化个人主页</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/stylehome.css">
+	<link rel="icon" href="style/images/home.png">
 </head>
+
 <body>
-  <div class="main-bg"></div>
-  <div class="container">
-    <header>
-      <h1>
-        <span class="gradient-text">PerfectQing</span>
-      </h1>
-      <p class="subtitle">遇见更好的自己</p>
-    </header>
+    <div class="header">
+        <ul>
+            <li class="active"><a href="index.html">主页</a></li>
+            <li><a href="task.html">任务清单</a></li>
+            <li><a href="calendar.html">日历</a></li>
+            <li><a href="color.html">调色板</a></li>
+            <li>联系我</li>
+            <li><a href="oldindex.html">旧主页</a></li>
+            <li><a href="MyTime/school_table.html">课程表</a></li>
+            <li><a href="https://perfectqing.github.io/blogs/">博客</a></li>
+        </ul>
+    </div>
+    <div class="mainContent">
+        <div class="window">
+            <!-- <img src="./bg.jpg" alt=""> -->
+            <div class="table">
+                <div class="bg">
+                    <p>当前时间</p>
+                    <h1 id="tt">时间</h1>
+                    <p id="dt">日期</p>
+                    <p>已专注时间</p>
+                    <h1 id="tt2">时间</h1>
+                    <button id="bt1" onclick="time2()" class="">开始</button>
+                    <button id="bt2" onclick="init()" class="none">置零</button>
+                    <h5>Design For Myself</h5>
+                </div>
+            </div>
+            <script>
+                var timecc = 0;
+                function time2() {
+                    timecc = new Date();
+                    document.getElementById('bt2').className="";
+                    document.getElementById('bt1').className="none";
+                }
+                function init() {
+                    timecc = 0;
+                    document.getElementById('bt1').className="";
+                    document.getElementById('bt2').className="none";
     
-    <nav>
-      <a href="#about" class="nav-btn">关于我</a>
-      <a href="#projects" class="nav-btn">项目</a>
-      <a href="#contact" class="nav-btn">联系</a>
-    </nav>
+                }
+                function time() {
+                    
+                    var date = new Date();
+                    var second = date.getSeconds();
+                    var hour = date.getHours();
+                    var min = date.getMinutes();
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    var day = date.getDate();
+                    if (hour >= 0 && hour <= 9) {
+                        hour = '0' + hour;
+                    }
+                    if (min >= 0 && min <= 9) {
+                        min = '0' + min;
+                    }
+                    if (second >= 0 && second <= 9) {
+                        second = '0' + second;
+                    }
+                    var ss ='';
+                    var s2, h2, m2;
+                    if(timecc == 0) {
+                        s2 = "0";
+                        h2 = "0";
+                        m2 = "0";
+                    }
+                    else {
+                        ss = Math.ceil((date - timecc)/ 1000);
+                        s2 = parseInt(ss % 60 ) ;
+                        m2 = parseInt(ss / 60 % 60);
+                        h2 = parseInt(ss / 60 / 60);
+                    }
+                    if (h2 >= 0 && h2 <= 9) {
+                        h2 = '0' + h2;
+                    }
+                    if (m2 >= 0 && m2 <= 9) {
+                        m2 = '0' + m2;
+                    }
+                    if (s2 >= 0 && s2 <= 9) {
+                        s2 = '0' + s2;
+                    }
+                    document.getElementById('tt').innerHTML = hour + ':' + min + ':' + second;
+                    document.getElementById('dt').innerHTML = year + '年' + month + '月' + day + '日';
+                    document.getElementById('tt2').innerHTML = h2 + ':' + m2 + ':'  + s2;
+                }
+                time();
+                setInterval("time()", 1000);
+                
+    
+    
+                var i = 1;
+                function showlove() {
+                    if (i == 1) {
+                        document.getElementById('love').className = "none"
+                        i *= -1;
+                    } else {
+                        document.getElementById('love').className = ""
+                        i *= -1;
+                    }
+                }
+                var str = "在一起";
+    
+                window.setTimeout("share_data_time()", 1000);
+                //毕业时间
+                BirthDay = new Date("4/1/2018 00:00:00");
+                //获取当前时间
+                today = new Date();
+                timeold = (today.getTime() - BirthDay.getTime()); //总豪秒数
+                secondsold = Math.floor(timeold / 1000);          //总秒数
+                e_daysold = timeold / (24 * 60 * 60 * 1000);
+                daysold = Math.floor(e_daysold);                 //相差天数
+                e_hrsold = (e_daysold - daysold) * 24;
+                hrsold = Math.floor(e_hrsold);                   //相差小时数
+                e_minsold = (e_hrsold - hrsold) * 60;
+                minsold = Math.floor(e_minsold)                   //相差分钟数
+                seconds = Math.floor((e_minsold - minsold) * 60);  //相差秒数
+                //将所获取的时间拼接到一起，再把值显示到页面
+                setInterval("document.getElementById('sbTitle').innerHTML= str+'💖'+daysold.toString()+'💖天啦';", 1000);
+            </script>
+        </div>
+    </div>
+    <div class="footer">
 
-    <section id="about" class="card">
-      <h2>关于我</h2>
-      <p>你好！我是 PerfectQing。</p>
-    </section>
-
-    <section id="projects" class="card">
-      <h2>我的项目</h2>
-      <ul class="project-list">
-        <li>
-          <a href="https://www.oopseek.cn" target="_blank" class="project-link">Project1</a>
-          <span class="project-desc">OopSeek AI 搜索平台</span>
-        </li>
-<!--         <li>
-          <a href="https://github.com/PerfectQing/Project2" target="_blank" class="project-link">Project2</a>
-          <span class="project-desc">交互式数据可视化Demo</span>
-        </li> -->
-        <!-- 可根据实际添加更多项目 -->
-      </ul>
-    </section>
-
-    <section id="contact" class="card">
-      <h2>联系我</h2>
-      <div class="contact-list">
-        <a href="mailto:your@email.com" class="contact-btn">📧 邮箱</a>
-        <a href="https://github.com/PerfectQing" target="_blank" class="contact-btn">💻 GitHub</a>
-        <!-- 可添加更多联系方式 -->
-      </div>
-    </section>
-
-    <footer>
-      <p class="footer-text">© 2025 PerfectQing. All rights reserved.</p>
-    </footer>
-  </div>
+    </div>
 </body>
+
 </html>
