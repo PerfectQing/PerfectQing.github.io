@@ -1,139 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/stylehome.css">
-	<link rel="icon" href="style/images/home.png">
+    <title>Modern Minimalist Design</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background: #007BFF;
+            color: white;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            margin: 1rem 0;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .counter {
+            font-size: 2rem;
+            margin-top: 20px;
+        }
+    </style>
 </head>
-
 <body>
-    <div class="header">
-        <ul>
-            <li class="active"><a href="index.html">主页</a></li>
-            <li><a href="task.html">任务清单</a></li>
-            <li><a href="calendar.html">日历</a></li>
-            <li><a href="color.html">调色板</a></li>
-            <li>联系我</li>
-            <li><a href="oldindex.html">旧主页</a></li>
-            <li><a href="MyTime/school_table.html">课程表</a></li>
-            <li><a href="https://perfectqing.github.io/blogs/">博客</a></li>
-        </ul>
-    </div>
-    <div class="mainContent">
-        <div class="window">
-            <!-- <img src="./bg.jpg" alt=""> -->
-            <div class="table">
-                <div class="bg">
-                    <p>当前时间</p>
-                    <h1 id="tt">时间</h1>
-                    <p id="dt">日期</p>
-                    <p>已专注时间</p>
-                    <h1 id="tt2">时间</h1>
-                    <button id="bt1" onclick="time2()" class="">开始</button>
-                    <button id="bt2" onclick="init()" class="none">置零</button>
-                    <h5>Design For Myself</h5>
-                </div>
+    <header>
+        <h1>Welcome to My Site</h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <div class="counter">
+            <div>
+                Current Time: <span id="current-time"></span>
             </div>
-            <script>
-                var timecc = 0;
-                function time2() {
-                    timecc = new Date();
-                    document.getElementById('bt2').className="";
-                    document.getElementById('bt1').className="none";
-                }
-                function init() {
-                    timecc = 0;
-                    document.getElementById('bt1').className="";
-                    document.getElementById('bt2').className="none";
-    
-                }
-                function time() {
-                    
-                    var date = new Date();
-                    var second = date.getSeconds();
-                    var hour = date.getHours();
-                    var min = date.getMinutes();
-                    var year = date.getFullYear();
-                    var month = date.getMonth() + 1;
-                    var day = date.getDate();
-                    if (hour >= 0 && hour <= 9) {
-                        hour = '0' + hour;
-                    }
-                    if (min >= 0 && min <= 9) {
-                        min = '0' + min;
-                    }
-                    if (second >= 0 && second <= 9) {
-                        second = '0' + second;
-                    }
-                    var ss ='';
-                    var s2, h2, m2;
-                    if(timecc == 0) {
-                        s2 = "0";
-                        h2 = "0";
-                        m2 = "0";
-                    }
-                    else {
-                        ss = Math.ceil((date - timecc)/ 1000);
-                        s2 = parseInt(ss % 60 ) ;
-                        m2 = parseInt(ss / 60 % 60);
-                        h2 = parseInt(ss / 60 / 60);
-                    }
-                    if (h2 >= 0 && h2 <= 9) {
-                        h2 = '0' + h2;
-                    }
-                    if (m2 >= 0 && m2 <= 9) {
-                        m2 = '0' + m2;
-                    }
-                    if (s2 >= 0 && s2 <= 9) {
-                        s2 = '0' + s2;
-                    }
-                    document.getElementById('tt').innerHTML = hour + ':' + min + ':' + second;
-                    document.getElementById('dt').innerHTML = year + '年' + month + '月' + day + '日';
-                    document.getElementById('tt2').innerHTML = h2 + ':' + m2 + ':'  + s2;
-                }
-                time();
-                setInterval("time()", 1000);
-                
-    
-    
-                var i = 1;
-                function showlove() {
-                    if (i == 1) {
-                        document.getElementById('love').className = "none"
-                        i *= -1;
-                    } else {
-                        document.getElementById('love').className = ""
-                        i *= -1;
-                    }
-                }
-                var str = "在一起";
-    
-                window.setTimeout("share_data_time()", 1000);
-                //毕业时间
-                BirthDay = new Date("4/1/2018 00:00:00");
-                //获取当前时间
-                today = new Date();
-                timeold = (today.getTime() - BirthDay.getTime()); //总豪秒数
-                secondsold = Math.floor(timeold / 1000);          //总秒数
-                e_daysold = timeold / (24 * 60 * 60 * 1000);
-                daysold = Math.floor(e_daysold);                 //相差天数
-                e_hrsold = (e_daysold - daysold) * 24;
-                hrsold = Math.floor(e_hrsold);                   //相差小时数
-                e_minsold = (e_hrsold - hrsold) * 60;
-                minsold = Math.floor(e_minsold)                   //相差分钟数
-                seconds = Math.floor((e_minsold - minsold) * 60);  //相差秒数
-                //将所获取的时间拼接到一起，再把值显示到页面
-                setInterval("document.getElementById('sbTitle').innerHTML= str+'💖'+daysold.toString()+'💖天啦';", 1000);
-            </script>
+            <div>
+                Focused Time: <span id="focused-time">0</span> minutes
+            </div>
+            <div>
+                Days Together: <span id="days-together">0</span> days
+            </div>
         </div>
-    </div>
-    <div class="footer">
-
-    </div>
+    </main>
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const utcString = now.toISOString().slice(0, 19).replace('T', ' ');
+            document.getElementById('current-time').textContent = utcString;
+        }
+        setInterval(updateTime, 1000);
+        // Placeholder for focused time
+        let focusedTime = 0;
+        setInterval(() => {
+            focusedTime++;
+            document.getElementById('focused-time').textContent = focusedTime;
+        }, 60000);
+        // Placeholder for days together
+        let daysTogether = 0;
+        setInterval(() => {
+            daysTogether++;
+            document.getElementById('days-together').textContent = daysTogether;
+        }, 86400000);
+        updateTime();
+    </script>
 </body>
-
 </html>
