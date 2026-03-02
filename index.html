@@ -1,88 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Minimalist Design</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        header {
-            background: #007BFF;
-            color: white;
-            width: 100%;
-            padding: 1rem;
-            text-align: center;
-        }
-        nav {
-            margin: 1rem 0;
-        }
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-        }
-        main {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .counter {
-            font-size: 2rem;
-            margin-top: 20px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PerfectQing — Home</title>
+<style>
+body { margin:0; font-family:Inter, system-ui, Arial; background: linear-gradient(135deg,#e6f0ff,#f7f7ff); color:#111; min-height:100vh; display:flex; flex-direction:column; }
+.header { padding:24px; display:flex; justify-content:space-between; align-items:center; backdrop-filter: blur(6px); background:rgba(255,255,255,0.6); box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#7b61ff,#00c6ff);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+h1{margin:0;font-size:1.25rem}
+.time { text-align:right; font-size:0.9rem; color:#333}
+.container{max-width:1100px;margin:28px auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.85)); border-radius:14px; padding:18px; box-shadow:0 6px 18px rgba(16,24,40,0.06); transition:transform .22s ease, box-shadow .22s ease; cursor:pointer; }
+.card:hover{transform:translateY(-6px); box-shadow:0 12px 30px rgba(16,24,40,0.12)}
+.card .title{font-weight:600;margin-bottom:8px}
+.card .desc{font-size:0.95rem;color:#444;margin-bottom:12px}
+.card .link{color:#0366d6;font-weight:600;text-decoration:none}
+.footer{margin-top:32px;text-align:center;color:#666;font-size:0.9rem;padding:20px}
+@media (max-width:480px){ .header{flex-direction:column;align-items:flex-start;gap:12px} .time{text-align:left}}
+</style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to My Site</h1>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
-        </nav>
-    </header>
-    <main>
-        <div class="counter">
-            <div>
-                Current Time: <span id="current-time"></span>
-            </div>
-            <div>
-                Focused Time: <span id="focused-time">0</span> minutes
-            </div>
-            <div>
-                Days Together: <span id="days-together">0</span> days
-            </div>
-        </div>
-    </main>
-    <script>
-        function updateTime() {
-            const now = new Date();
-            const utcString = now.toISOString().slice(0, 19).replace('T', ' ');
-            document.getElementById('current-time').textContent = utcString;
-        }
-        setInterval(updateTime, 1000);
-        // Placeholder for focused time
-        let focusedTime = 0;
-        setInterval(() => {
-            focusedTime++;
-            document.getElementById('focused-time').textContent = focusedTime;
-        }, 60000);
-        // Placeholder for days together
-        let daysTogether = 0;
-        setInterval(() => {
-            daysTogether++;
-            document.getElementById('days-together').textContent = daysTogether;
-        }, 86400000);
-        updateTime();
-    </script>
+<header class="header">
+<div class="brand">
+<div class="logo">PQ</div>
+<div>
+<h1>PerfectQing — Tools Hub</h1>
+<div style="font-size:0.85rem;color:#555">A small collection of utility pages — quick access & guidance</div>
+</div>
+</div>
+<div class="time">
+<div id="current-time">--</div>
+<div style="font-size:0.85rem;color:#666">Focused: <span id="focused-time">0</span> min · Together: <span id="days-together">0</span> days</div>
+</div>
+</header>
+
+<main class="container">
+<section>
+<h2 style="margin:0 0 12px 0">Quick Start</h2>
+<p style="margin:0 0 18px 0;color:#444">下面列出仓库中所有功能页面，点击卡片即可跳转。每个卡片包含用途说明与快速操作建议。</p>
+
+<div class="grid">
+<div class="card" onclick="location.href='calendar.html'">
+<div class="title">📅 Calendar</div>
+<div class="desc">查看并管理日期/计划，包含日历演示与日期选择组件。</div>
+<a class="link" href="calendar.html">打开 Calendar →</a>
+</div>
+
+<div class="card" onclick="location.href='color.html'">
+<div class="title">🎨 Color Tools</div>
+<div class="desc">颜色生成器、调色板与色彩转换工具，适合设计调试。</div>
+<a class="link" href="color.html">打开 Color →</a>
+</div>
+
+<div class="card" onclick="location.href='task.html'">
+<div class="title">📝 Task Manager</div>
+<div class="desc">任务列表与专注时间记录（简单示例）。</div>
+<a class="link" href="task.html">打开 Task →</a>
+</div>
+
+<div class="card" onclick="location.href='MyTime/'">
+<div class="title">⏱️ MyTime</div>
+<div class="desc">自定义专注/计时页面（存放在 MyTime 文件夹）。</div>
+<a class="link" href="MyTime/">进入 MyTime →</a>
+</div>
+
+<div class="card" onclick="location.href='Resources/'">
+<div class="title">📁 Resources</div>
+<div class="desc">资源与素材目录（图片、字体、说明等）。</div>
+<a class="link" href="Resources/">查看 Resources →</a>
+</div>
+
+<div class="card" onclick="location.href='oldindex.html'">
+<div class="title">🔙 Old Homepage</div>
+<div class="desc">旧版主页备��，保留历史布局与逻辑以便回滚或参考。</div>
+<a class="link" href="oldindex.html">查看旧版 →</a>
+</div>
+</div>
+</section>
+
+<section style="margin-top:22px">
+<h3 style="margin:0 0 12px 0">使用建议</h3>
+<ul style="color:#444">
+<li>先从 Calendar 或 Task 体验交互流程。</li>
+<li>若需要全局样式调整，可在 style/ 或新增 styles.css 中集中管理。</li>
+<li>我可以把样式拆分到 styles.css 并提交为单文件，或创建一个备份 oldindex-backup.html。</li>
+</ul>
+</section>
+
+<div class="footer">
+<a href="https://github.com/PerfectQing/PerfectQing.github.io" target="_blank">GitHub: PerfectQing/PerfectQing.github.io</a>
+</div>
+</main>
+
+<script>
+function updateTime(){
+const now=new Date();
+document.getElementById('current-time').textContent=now.toLocaleString();
+}
+setInterval(updateTime,1000);
+updateTime();
+
+// placeholders for focused time and days together (persisting could be added)
+let focusedTime=0;
+let daysTogether=0;
+setInterval(()=>{ focusedTime++; document.getElementById('focused-time').textContent=focusedTime; },60000);
+setInterval(()=>{ daysTogether++; document.getElementById('days-together').textContent=daysTogether; },86400000);
+</script>
 </body>
 </html>
