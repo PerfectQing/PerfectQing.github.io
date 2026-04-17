@@ -3,613 +3,820 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PerfectQing — Tools Hub</title>
+    <title>Dashboard</title>
     <link rel="icon" href="style/images/home.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-primary: #0a0a0b;
-            --bg-secondary: #111113;
-            --bg-tertiary: #18181b;
-            --bg-card: rgba(24, 24, 27, 0.6);
-            --bg-card-hover: rgba(39, 39, 42, 0.8);
-            --border-primary: rgba(63, 63, 70, 0.4);
-            --border-hover: rgba(99, 102, 241, 0.5);
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-tertiary: #71717a;
-            --accent: #6366f1;
-            --accent-light: #818cf8;
-            --accent-glow: rgba(99, 102, 241, 0.15);
-            --success: #22c55e;
-            --radius: 16px;
-            --radius-sm: 10px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * {
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+        
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
+        :root {
+            --bg: #09090b;
+            --bg-subtle: #0c0c0e;
+            --surface: #131316;
+            --surface-hover: #1a1a1f;
+            --border: rgba(255, 255, 255, 0.05);
+            --border-hover: rgba(255, 255, 255, 0.1);
+            --text: #fafafa;
+            --text-secondary: rgba(255, 255, 255, 0.55);
+            --text-muted: rgba(255, 255, 255, 0.3);
         }
 
-        /* Subtle grid background */
-        body::before {
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            letter-spacing: -0.01em;
+        }
+
+        /* Premium grain texture */
+        body::after {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        /* Subtle gradient orb */
+        .gradient-orb {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.015) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
             pointer-events: none;
             z-index: 0;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Header */
-        .header {
-            padding: 24px 0;
-            border-bottom: 1px solid var(--border-primary);
-            backdrop-filter: blur(12px);
-            background: rgba(10, 10, 11, 0.8);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .logo {
-            width: 44px;
-            height: 44px;
-            border-radius: var(--radius-sm);
-            background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-            letter-spacing: -0.5px;
-            color: white;
-        }
-
-        .brand-text h1 {
-            font-size: 18px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        .brand-text p {
-            font-size: 13px;
-            color: var(--text-tertiary);
-            margin-top: 2px;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .time-display {
-            text-align: right;
-        }
-
-        .time-display .time {
-            font-size: 28px;
-            font-weight: 600;
-            letter-spacing: -1px;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .time-display .date {
-            font-size: 13px;
-            color: var(--text-tertiary);
-            margin-top: 2px;
-        }
-
-        .stats {
-            display: flex;
-            gap: 20px;
-            padding-left: 24px;
-            border-left: 1px solid var(--border-primary);
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--accent-light);
-            font-variant-numeric: tabular-nums;
-        }
-
-        .stat-label {
-            font-size: 11px;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 2px;
-        }
-
         /* Navigation */
         nav {
-            padding: 20px 0;
-        }
-
-        nav ul {
-            display: flex;
-            gap: 8px;
-            list-style: none;
-            flex-wrap: wrap;
-        }
-
-        nav a {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 9999px;
-            border: 1px solid transparent;
-            transition: var(--transition);
-        }
-
-        nav a:hover {
-            color: var(--text-primary);
-            background: var(--bg-tertiary);
-            border-color: var(--border-primary);
-        }
-
-        nav a.active {
-            color: var(--accent-light);
-            background: var(--accent-glow);
-            border-color: var(--border-hover);
-        }
-
-        /* Main Content */
-        main {
-            padding: 48px 0 80px;
-        }
-
-        .section-header {
-            margin-bottom: 32px;
-        }
-
-        .section-header h2 {
-            font-size: 32px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
-        }
-
-        .section-header p {
-            color: var(--text-secondary);
-            font-size: 16px;
-            max-width: 500px;
-        }
-
-        /* Cards Grid */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius);
-            padding: 28px;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(8px);
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .card:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--border-hover);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
-        }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--radius-sm);
+            height: 56px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            margin-bottom: 20px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-primary);
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 100;
+            background: rgba(9, 9, 11, 0.6);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            border-bottom: 1px solid var(--border);
         }
 
-        .card-icon.calendar { background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2)); }
-        .card-icon.color { background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(244, 114, 182, 0.2)); }
-        .card-icon.task { background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(74, 222, 128, 0.2)); }
-        .card-icon.time { background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(253, 186, 116, 0.2)); }
-        .card-icon.resource { background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(96, 165, 250, 0.2)); }
-        .card-icon.old { background: linear-gradient(135deg, rgba(161, 161, 170, 0.2), rgba(113, 113, 122, 0.2)); }
-
-        .card h3 {
-            font-size: 18px;
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
             font-weight: 600;
-            margin-bottom: 8px;
-            letter-spacing: -0.3px;
-        }
-
-        .card p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .card-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--accent-light);
-            font-size: 14px;
-            font-weight: 500;
+            letter-spacing: -0.03em;
+            color: var(--text);
             text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .card-link svg {
-            width: 16px;
-            height: 16px;
-            transition: var(--transition);
-        }
-
-        .card:hover .card-link svg {
-            transform: translateX(4px);
-        }
-
-        /* Tips Section */
-        .tips-section {
-            margin-top: 64px;
-            padding: 32px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius);
-            backdrop-filter: blur(8px);
-        }
-
-        .tips-section h3 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .tips-section ul {
-            list-style: none;
-            display: grid;
-            gap: 12px;
-        }
-
-        .tips-section li {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        .tips-section li::before {
-            content: '';
+        .nav-logo span {
             width: 6px;
             height: 6px;
+            background: var(--text);
             border-radius: 50%;
-            background: var(--accent);
-            margin-top: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 6px;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 450;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .nav-links a.active {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* Main */
+        main {
+            padding: 140px 40px 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero */
+        .hero {
+            margin-bottom: 100px;
+            position: relative;
+        }
+
+        .hero-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 20px;
+        }
+
+        .hero-time {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(72px, 12vw, 140px);
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            line-height: 0.85;
+            margin-bottom: 24px;
+        }
+
+        .hero-time .colon {
+            opacity: 0.3;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .hero-meta {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .hero-date {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 24px;
+            padding-left: 32px;
+            border-left: 1px solid var(--border);
+        }
+
+        .hero-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .hero-stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* Section */
+        .section-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Bento Grid */
+        .bento {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: 80px;
+            gap: 12px;
+        }
+
+        .bento-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .bento-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                rgba(255,255,255,0.02),
+                transparent 40%
+            );
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .bento-item:hover {
+            border-color: var(--border-hover);
+            background: var(--surface-hover);
+            transform: translateY(-2px);
+        }
+
+        .bento-item:hover::before {
+            opacity: 1;
+        }
+
+        /* Bento sizes */
+        .bento-hero {
+            grid-column: span 7;
+            grid-row: span 4;
+        }
+
+        .bento-tall {
+            grid-column: span 5;
+            grid-row: span 4;
+        }
+
+        .bento-wide {
+            grid-column: span 6;
+            grid-row: span 3;
+        }
+
+        .bento-square {
+            grid-column: span 3;
+            grid-row: span 3;
+        }
+
+        .bento-small {
+            grid-column: span 3;
+            grid-row: span 2;
+        }
+
+        /* Bento content */
+        .bento-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .bento-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bento-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--text-secondary);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .bento-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .bento-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .bento-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
+        }
+
+        .bento-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .bento-arrow {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translate(-4px, 4px);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .bento-item:hover .bento-arrow {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+
+        .bento-arrow svg {
+            width: 12px;
+            height: 12px;
+            stroke: var(--text);
+            stroke-width: 2;
+        }
+
+        /* Calendar preview */
+        .calendar-preview {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-top: 20px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.02);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .calendar-day.today {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .calendar-day.empty {
+            background: transparent;
+        }
+
+        /* Color dots */
+        .color-dots {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .color-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+        }
+
+        .color-dot:hover {
+            transform: scale(1.15);
+        }
+
+        /* Task list preview */
+        .task-list {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .task-check {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            border: 1px solid var(--border-hover);
             flex-shrink: 0;
         }
 
+        .task-check.done {
+            background: var(--text);
+            border-color: var(--text);
+        }
+
+        /* Large text for hero card */
+        .bento-large-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1;
+            margin-bottom: 12px;
+        }
+
         /* Footer */
-        .footer {
-            padding: 32px 0;
-            border-top: 1px solid var(--border-primary);
-            text-align: center;
+        footer {
+            padding: 40px;
+            margin-top: 80px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .footer a {
-            color: var(--text-tertiary);
+        .footer-left {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            font-size: 12px;
+            color: var(--text-muted);
             text-decoration: none;
-            font-size: 14px;
-            transition: var(--transition);
+            transition: color 0.15s;
         }
 
-        .footer a:hover {
-            color: var(--accent-light);
+        .footer-links a:hover {
+            color: var(--text-secondary);
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .header-inner {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-            }
-
-            .header-right {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .stats {
-                padding-left: 20px;
-            }
-
-            .section-header h2 {
-                font-size: 24px;
-            }
-
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-
-            nav ul {
-                gap: 6px;
-            }
-
-            nav a {
-                padding: 8px 14px;
-                font-size: 13px;
-            }
+        @media (max-width: 1024px) {
+            nav { padding: 0 24px; }
+            main { padding: 120px 24px 60px; }
+            .bento-hero, .bento-tall { grid-column: span 12; }
+            .bento-wide { grid-column: span 12; }
+            .bento-square { grid-column: span 6; }
+            .bento-small { grid-column: span 6; }
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @media (max-width: 640px) {
+            nav { padding: 0 16px; }
+            main { padding: 100px 16px 40px; }
+            .nav-links { display: none; }
+            .hero-time { font-size: 56px; }
+            .hero-meta { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .hero-stats { padding-left: 0; border-left: none; padding-top: 16px; border-top: 1px solid var(--border); }
+            .bento { gap: 8px; }
+            .bento-hero, .bento-tall, .bento-wide, .bento-square, .bento-small { grid-column: span 12; grid-row: span 3; }
+            .bento-item { padding: 20px; }
+            .bento-large-text { font-size: 32px; }
+            footer { flex-direction: column; gap: 16px; text-align: center; }
         }
-
-        .card {
-            animation: fadeIn 0.5s ease forwards;
-        }
-
-        .card:nth-child(1) { animation-delay: 0.1s; }
-        .card:nth-child(2) { animation-delay: 0.15s; }
-        .card:nth-child(3) { animation-delay: 0.2s; }
-        .card:nth-child(4) { animation-delay: 0.25s; }
-        .card:nth-child(5) { animation-delay: 0.3s; }
-        .card:nth-child(6) { animation-delay: 0.35s; }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="header-inner">
-                <div class="brand">
-                    <div class="logo">PQ</div>
-                    <div class="brand-text">
-                        <h1>PerfectQing</h1>
-                        <p>Tools Hub</p>
-                    </div>
-                </div>
-                <div class="header-right">
-                    <div class="time-display">
-                        <div class="time" id="current-time">--:--:--</div>
-                        <div class="date" id="current-date">Loading...</div>
-                    </div>
-                    <div class="stats">
-                        <div class="stat">
-                            <div class="stat-value" id="focused-time">0</div>
-                            <div class="stat-label">Focused Min</div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-value" id="days-together">0</div>
-                            <div class="stat-label">Days</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="gradient-orb"></div>
+    
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <span></span>
+            Dashboard
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="color.html">Colors</a>
+            <a href="task.html">Tasks</a>
+            <a href="MyTime/school_table.html">Schedule</a>
         </div>
-    </header>
+    </nav>
 
-    <div class="container">
-        <nav>
-            <ul>
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="calendar.html">Calendar</a></li>
-                <li><a href="task.html">Tasks</a></li>
-                <li><a href="color.html">Colors</a></li>
-                <li><a href="MyTime/school_table.html">Schedule</a></li>
-                <li><a href="https://perfectqing.github.io/blogs/" target="_blank">Blog</a></li>
-            </ul>
-        </nav>
-
-        <main>
-            <section class="section-header">
-                <h2>Quick Start</h2>
-                <p>A curated collection of utility tools for everyday productivity and design work.</p>
-            </section>
-
-            <div class="cards-grid">
-                <div class="card" onclick="location.href='calendar.html'">
-                    <div class="card-icon calendar">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+    <main>
+        <section class="hero">
+            <p class="hero-eyebrow">Current Time</p>
+            <h1 class="hero-time"><span id="hours">00</span><span class="colon">:</span><span id="minutes">00</span></h1>
+            <div class="hero-meta">
+                <p class="hero-date" id="date">Loading...</p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="hero-stat-value" id="dayCount">0</span>
+                        <span class="hero-stat-label">Day of Year</span>
                     </div>
-                    <h3>Calendar</h3>
-                    <p>View and manage dates with countdown timer and daily motivational quotes.</p>
-                    <a class="card-link" href="calendar.html">
-                        Open Calendar
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
-                </div>
-
-                <div class="card" onclick="location.href='color.html'">
-                    <div class="card-icon color">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"></circle><circle cx="6.5" cy="13.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle><path d="M8.5 8.5L15.5 15.5"></path></svg>
+                    <div class="hero-stat">
+                        <span class="hero-stat-value" id="yearProgress">0%</span>
+                        <span class="hero-stat-label">Year Progress</span>
                     </div>
-                    <h3>Color Tools</h3>
-                    <p>Material Design color palette generator and converter for design debugging.</p>
-                    <a class="card-link" href="color.html">
-                        Open Colors
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
-                </div>
-
-                <div class="card" onclick="location.href='task.html'">
-                    <div class="card-icon task">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                    <div class="hero-stat">
+                        <span class="hero-stat-value" id="focusTime">0h</span>
+                        <span class="hero-stat-label">Focus Time</span>
                     </div>
-                    <h3>Task Manager</h3>
-                    <p>Organize your daily tasks and track focus time with simple productivity tools.</p>
-                    <a class="card-link" href="task.html">
-                        Open Tasks
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
-                </div>
-
-                <div class="card" onclick="location.href='MyTime/school_table.html'">
-                    <div class="card-icon time">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    </div>
-                    <h3>Course Schedule</h3>
-                    <p>Personal timetable viewer with automatic current class highlighting.</p>
-                    <a class="card-link" href="MyTime/school_table.html">
-                        View Schedule
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
-                </div>
-
-                <div class="card" onclick="location.href='Resources/'">
-                    <div class="card-icon resource">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                    </div>
-                    <h3>Resources</h3>
-                    <p>Collection of assets, images, fonts and documentation files.</p>
-                    <a class="card-link" href="Resources/">
-                        Browse Files
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
-                </div>
-
-                <div class="card" onclick="location.href='oldindex.html'">
-                    <div class="card-icon old">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 10"></polyline></svg>
-                    </div>
-                    <h3>Legacy Homepage</h3>
-                    <p>Previous version backup with music player and background switcher.</p>
-                    <a class="card-link" href="oldindex.html">
-                        View Archive
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                    </a>
                 </div>
             </div>
+        </section>
 
-            <section class="tips-section">
-                <h3>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                    Getting Started
-                </h3>
-                <ul>
-                    <li>Start with Calendar or Task Manager to explore the interactive features.</li>
-                    <li>Check Course Schedule for automatic class time highlighting.</li>
-                    <li>Use Color Tools for quick design reference and palette generation.</li>
-                </ul>
-            </section>
-        </main>
+        <section>
+            <p class="section-label">Tools</p>
+            <div class="bento">
+                <!-- Calendar - Hero card -->
+                <a href="calendar.html" class="bento-item bento-hero">
+                    <div class="bento-header">
+                        <div class="bento-icon">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                        </div>
+                        <span class="bento-number">01</span>
+                    </div>
+                    <div class="bento-content">
+                        <p class="bento-large-text" id="countdown">365</p>
+                        <h3 class="bento-title">Calendar</h3>
+                        <p class="bento-desc">Track dates, countdowns, and important events with precision.</p>
+                        <div class="calendar-preview" id="miniCalendar"></div>
+                    </div>
+                    <div class="bento-arrow">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
 
-        <footer class="footer">
-            <a href="https://github.com/PerfectQing/PerfectQing.github.io" target="_blank">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 6px;"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                PerfectQing/PerfectQing.github.io
-            </a>
-        </footer>
-    </div>
+                <!-- Colors - Tall card -->
+                <a href="color.html" class="bento-item bento-tall">
+                    <div class="bento-header">
+                        <div class="bento-icon">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 2a10 10 0 0 1 0 20"/>
+                            </svg>
+                        </div>
+                        <span class="bento-number">02</span>
+                    </div>
+                    <div class="bento-content">
+                        <h3 class="bento-title">Color Palette</h3>
+                        <p class="bento-desc">Curated colors from Material Design and traditional Japanese aesthetics. Click to copy.</p>
+                        <div class="color-dots">
+                            <div class="color-dot" style="background: #ef4444"></div>
+                            <div class="color-dot" style="background: #f97316"></div>
+                            <div class="color-dot" style="background: #eab308"></div>
+                            <div class="color-dot" style="background: #22c55e"></div>
+                            <div class="color-dot" style="background: #3b82f6"></div>
+                            <div class="color-dot" style="background: #8b5cf6"></div>
+                        </div>
+                    </div>
+                    <div class="bento-arrow">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Tasks -->
+                <a href="task.html" class="bento-item bento-wide">
+                    <div class="bento-header">
+                        <div class="bento-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M9 11l3 3L22 4"/>
+                                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+                            </svg>
+                        </div>
+                        <span class="bento-number">03</span>
+                    </div>
+                    <div class="bento-content">
+                        <h3 class="bento-title">Tasks</h3>
+                        <p class="bento-desc">Simple, focused task management.</p>
+                        <div class="task-list">
+                            <div class="task-item">
+                                <div class="task-check done"></div>
+                                <span>Review project designs</span>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-check"></div>
+                                <span>Ship weekly updates</span>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-check"></div>
+                                <span>Prepare presentation</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bento-arrow">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Schedule -->
+                <a href="MyTime/school_table.html" class="bento-item bento-wide">
+                    <div class="bento-header">
+                        <div class="bento-icon">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
+                            </svg>
+                        </div>
+                        <span class="bento-number">04</span>
+                    </div>
+                    <div class="bento-content">
+                        <h3 class="bento-title">Course Schedule</h3>
+                        <p class="bento-desc">Personal timetable with real-time class highlighting and status.</p>
+                    </div>
+                    <div class="bento-arrow">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Legacy -->
+                <a href="oldindex.html" class="bento-item bento-square">
+                    <div class="bento-header">
+                        <div class="bento-icon">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                        </div>
+                        <span class="bento-number">05</span>
+                    </div>
+                    <div class="bento-content">
+                        <h3 class="bento-title">Legacy</h3>
+                        <p class="bento-desc">Previous version with music player.</p>
+                    </div>
+                    <div class="bento-arrow">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <!-- Blog -->
+                <a href="https://perfectqing.github.io/blogs/" target="_blank" class="bento-item bento-square">
+                    <div class="bento-header">
+                        <div class="bento-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+                                <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                                <path d="M2 2l7.586 7.586"/>
+                            </svg>
+                        </div>
+                        <span class="bento-number">06</span>
+                    </div>
+                    <div class="bento-content">
+                        <h3 class="bento-title">Blog</h3>
+                        <p class="bento-desc">Thoughts and writings.</p>
+                    </div>
+                    <div class="bento-arrow">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p class="footer-left">Built with precision</p>
+        <div class="footer-links">
+            <a href="Resources/">Resources</a>
+            <a href="oldindex.html">Archive</a>
+        </div>
+    </footer>
 
     <script>
-        // Time Display
+        // Time
         function updateTime() {
             const now = new Date();
-            const timeStr = now.toLocaleTimeString('en-US', { hour12: false });
-            const dateStr = now.toLocaleDateString('zh-CN', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                weekday: 'long'
-            });
-            document.getElementById('current-time').textContent = timeStr;
-            document.getElementById('current-date').textContent = dateStr;
+            document.getElementById('hours').textContent = String(now.getHours()).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(now.getMinutes()).padStart(2, '0');
+            
+            const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+            document.getElementById('date').textContent = now.toLocaleDateString('en-US', options);
+            
+            // Day of year
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const oneDay = 1000 * 60 * 60 * 24;
+            const day = Math.floor(diff / oneDay);
+            document.getElementById('dayCount').textContent = day;
+            
+            // Year progress
+            const endYear = new Date(now.getFullYear(), 11, 31);
+            const totalDays = Math.floor((endYear - new Date(now.getFullYear(), 0, 0)) / oneDay);
+            const progress = Math.round((day / totalDays) * 100);
+            document.getElementById('yearProgress').textContent = progress + '%';
+            
+            // Countdown to end of year
+            const daysLeft = totalDays - day;
+            document.getElementById('countdown').textContent = daysLeft;
         }
-        setInterval(updateTime, 1000);
+        
+        // Focus time
+        function updateFocusTime() {
+            const minutes = parseInt(localStorage.getItem('focusMinutes') || '0');
+            const hours = Math.floor(minutes / 60);
+            document.getElementById('focusTime').textContent = hours + 'h';
+        }
+        
+        // Mini calendar
+        function renderCalendar() {
+            const now = new Date();
+            const first = new Date(now.getFullYear(), now.getMonth(), 1);
+            const last = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            const container = document.getElementById('miniCalendar');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < first.getDay(); i++) {
+                const el = document.createElement('div');
+                el.className = 'calendar-day empty';
+                container.appendChild(el);
+            }
+            
+            for (let d = 1; d <= last.getDate(); d++) {
+                const el = document.createElement('div');
+                el.className = 'calendar-day' + (d === now.getDate() ? ' today' : '');
+                el.textContent = d;
+                container.appendChild(el);
+            }
+        }
+        
+        // Mouse tracking for glow
+        document.querySelectorAll('.bento-item').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', x + '%');
+                card.style.setProperty('--mouse-y', y + '%');
+            });
+        });
+        
+        // Init
         updateTime();
-
-        // Focus time counter (persisted in localStorage)
-        let focusedTime = parseInt(localStorage.getItem('focusedTime') || '0');
-        document.getElementById('focused-time').textContent = focusedTime;
-        setInterval(() => {
-            focusedTime++;
-            localStorage.setItem('focusedTime', focusedTime);
-            document.getElementById('focused-time').textContent = focusedTime;
-        }, 60000);
-
-        // Days counter (from a start date)
-        const startDate = new Date('2020-09-01');
-        const today = new Date();
-        const daysTogether = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-        document.getElementById('days-together').textContent = daysTogether;
+        updateFocusTime();
+        renderCalendar();
+        setInterval(updateTime, 1000);
     </script>
 </body>
 </html>

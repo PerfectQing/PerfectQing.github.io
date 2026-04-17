@@ -3,208 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archive — PerfectQing</title>
+    <title>Archive</title>
     <link rel="icon" href="style/images/home.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+        
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
         :root {
-            --bg-primary: #0a0a0b;
-            --bg-secondary: #111113;
-            --bg-tertiary: #18181b;
-            --bg-card: rgba(24, 24, 27, 0.6);
-            --bg-card-hover: rgba(39, 39, 42, 0.8);
-            --border-primary: rgba(63, 63, 70, 0.4);
-            --border-hover: rgba(99, 102, 241, 0.5);
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-tertiary: #71717a;
-            --accent: #6366f1;
-            --accent-light: #818cf8;
-            --accent-glow: rgba(99, 102, 241, 0.15);
-            --success: #22c55e;
-            --radius: 16px;
-            --radius-sm: 10px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg: #09090b;
+            --surface: #131316;
+            --surface-hover: #1a1a1f;
+            --border: rgba(255, 255, 255, 0.05);
+            --border-hover: rgba(255, 255, 255, 0.1);
+            --text: #fafafa;
+            --text-secondary: rgba(255, 255, 255, 0.55);
+            --text-muted: rgba(255, 255, 255, 0.3);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; -webkit-font-smoothing: antialiased; }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.01em;
         }
 
-        body::before {
+        body::after {
             content: '';
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
             pointer-events: none;
-            z-index: 0;
+            z-index: 10000;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Header */
-        .header {
-            padding: 24px 0;
-            border-bottom: 1px solid var(--border-primary);
-            backdrop-filter: blur(12px);
-            background: rgba(10, 10, 11, 0.8);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-inner {
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 56px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
+            padding: 0 40px;
+            z-index: 100;
+            background: rgba(9, 9, 11, 0.6);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .logo {
-            width: 44px;
-            height: 44px;
-            border-radius: var(--radius-sm);
-            background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-            color: white;
-        }
-
-        .brand-text h1 { font-size: 18px; font-weight: 600; }
-        .brand-text p { font-size: 13px; color: var(--text-tertiary); }
-
-        /* Navigation */
-        nav { padding: 20px 0; }
-
-        nav ul {
-            display: flex;
-            gap: 8px;
-            list-style: none;
-            flex-wrap: wrap;
-        }
-
-        nav a {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 9999px;
-            border: 1px solid transparent;
-            transition: var(--transition);
-        }
-
-        nav a:hover {
-            color: var(--text-primary);
-            background: var(--bg-tertiary);
-            border-color: var(--border-primary);
-        }
-
-        nav a.active {
-            color: var(--accent-light);
-            background: var(--accent-glow);
-            border-color: var(--border-hover);
-        }
-
-        /* Main */
-        main {
-            padding: 48px 0 80px;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 64px 0;
-        }
-
-        .hero h2 {
-            font-size: 48px;
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
             font-weight: 600;
-            letter-spacing: -1px;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-light) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .hero p {
+        .nav-logo span { width: 6px; height: 6px; background: var(--text); border-radius: 50%; }
+
+        .nav-links { display: flex; gap: 6px; }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 450;
             color: var(--text-secondary);
-            font-size: 18px;
-            max-width: 500px;
-            margin: 0 auto;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
         }
 
-        /* Date Widget */
-        .date-widget {
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius);
-            padding: 32px;
+        .nav-links a:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
+        .nav-links a.active { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+
+        main {
+            padding: 140px 40px 100px;
+            max-width: 800px;
+            margin: 0 auto;
             text-align: center;
-            margin: 48px auto;
+        }
+
+        .hero-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 24px;
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(40px, 8vw, 64px);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .hero-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 400px;
+            margin: 0 auto 60px;
+        }
+
+        /* Date widget */
+        .date-widget {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
             max-width: 280px;
+            margin: 0 auto 48px;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.2s ease;
         }
 
         .date-widget:hover {
             border-color: var(--border-hover);
-            transform: scale(1.02);
+            transform: translateY(-2px);
         }
 
-        .date-widget .weekday {
-            font-size: 14px;
-            color: var(--text-tertiary);
+        .date-weekday {
+            font-size: 12px;
+            color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 0.1em;
             margin-bottom: 8px;
         }
 
-        .date-widget .day {
-            font-size: 72px;
+        .date-day {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 80px;
             font-weight: 700;
             line-height: 1;
-            color: var(--accent-light);
+            letter-spacing: -0.04em;
         }
 
-        .date-widget .full-date {
+        .date-full {
+            font-size: 12px;
+            color: var(--text-muted);
             margin-top: 16px;
-            font-size: 13px;
-            color: var(--text-tertiary);
             opacity: 0;
-            transition: var(--transition);
+            transition: opacity 0.2s;
         }
 
-        .date-widget:hover .full-date {
+        .date-widget:hover .date-full {
             opacity: 1;
         }
 
@@ -212,221 +165,197 @@
         .controls {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin: 32px 0;
+            gap: 10px;
+            margin-bottom: 48px;
             flex-wrap: wrap;
         }
 
         .btn {
-            padding: 12px 24px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: 9999px;
+            padding: 10px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
             color: var(--text-secondary);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.15s ease;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
         .btn:hover {
-            background: var(--bg-card-hover);
+            background: var(--surface-hover);
             border-color: var(--border-hover);
-            color: var(--text-primary);
+            color: var(--text);
         }
 
         .btn.active {
-            background: var(--accent-glow);
-            border-color: var(--accent);
-            color: var(--accent-light);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--border-hover);
+            color: var(--text);
         }
 
-        /* Music Player */
-        .music-section {
-            margin: 48px 0;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius);
-            padding: 24px;
-        }
-
-        .music-section h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .music-section iframe {
-            border-radius: var(--radius-sm);
-            width: 100%;
-            max-width: 330px;
-            margin: 0 auto;
-            display: block;
-        }
-
-        /* Color Palette */
-        .color-palette {
+        /* Color palette */
+        .palette {
             display: none;
-            margin-top: 32px;
             gap: 8px;
             flex-wrap: wrap;
             justify-content: center;
-            animation: fadeIn 0.3s ease;
+            margin-bottom: 48px;
         }
 
-        .color-palette.show {
+        .palette.show {
             display: flex;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .color-swatch {
-            width: 120px;
-            height: 80px;
-            border-radius: var(--radius-sm);
+            width: 100px;
+            height: 64px;
+            border-radius: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 10px;
             cursor: pointer;
-            transition: var(--transition);
+            transition: transform 0.15s ease;
         }
 
         .color-swatch:hover {
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
 
-        .color-swatch span {
-            opacity: 0.9;
+        .color-swatch .name {
+            font-weight: 500;
+            margin-bottom: 2px;
         }
 
-        /* Footer */
-        .footer {
-            padding: 32px 0;
-            border-top: 1px solid var(--border-primary);
-            text-align: center;
+        .color-swatch .hex {
+            opacity: 0.8;
         }
 
-        .footer a {
-            color: var(--text-tertiary);
-            text-decoration: none;
-            font-size: 14px;
-            transition: var(--transition);
+        /* Music */
+        .music-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 380px;
+            margin: 0 auto;
         }
 
-        .footer a:hover {
-            color: var(--accent-light);
+        .music-title {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .music-card iframe {
+            border-radius: 8px;
+            width: 100%;
+            max-width: 330px;
+        }
+
+        footer {
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            margin-top: 80px;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: var(--text-muted);
         }
 
         @media (max-width: 640px) {
-            .hero h2 { font-size: 32px; }
-            .date-widget .day { font-size: 56px; }
+            nav { padding: 0 16px; }
+            main { padding: 100px 16px 40px; }
+            .nav-links { display: none; }
+            .date-day { font-size: 56px; }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="header-inner">
-                <a href="index.html" class="brand">
-                    <div class="logo">PQ</div>
-                    <div class="brand-text">
-                        <h1>PerfectQing</h1>
-                        <p>Archive</p>
-                    </div>
-                </a>
+    <nav>
+        <a href="index.html" class="nav-logo"><span></span>Dashboard</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="color.html">Colors</a>
+            <a href="task.html">Tasks</a>
+            <a href="oldindex.html" class="active">Archive</a>
+        </div>
+    </nav>
+
+    <main>
+        <p class="hero-eyebrow">Legacy</p>
+        <h1 class="hero-title">Welcome</h1>
+        <p class="hero-desc">Archived version of the original homepage with classic features preserved.</p>
+
+        <div class="date-widget" onclick="toggleFullDate()">
+            <p class="date-weekday" id="weekday">Loading...</p>
+            <p class="date-day" id="day-number">--</p>
+            <p class="date-full" id="full-date"></p>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="changeBackground()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                Background
+            </button>
+            <button class="btn" id="palette-btn" onclick="togglePalette()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20"/></svg>
+                Palette
+            </button>
+        </div>
+
+        <div class="palette" id="palette">
+            <div class="color-swatch" style="background: #7bbfea; color: #000" onclick="copyColor('#7bbfea')">
+                <span class="name">勿忘草色</span>
+                <span class="hex">#7bbfea</span>
+            </div>
+            <div class="color-swatch" style="background: #33aedc; color: #fff" onclick="copyColor('#33aedc')">
+                <span class="name">露草色</span>
+                <span class="hex">#33aedc</span>
+            </div>
+            <div class="color-swatch" style="background: #228fbd; color: #fff" onclick="copyColor('#228fbd')">
+                <span class="name">缥色</span>
+                <span class="hex">#228fbd</span>
+            </div>
+            <div class="color-swatch" style="background: #2468a2; color: #fff" onclick="copyColor('#2468a2')">
+                <span class="name">浅缥</span>
+                <span class="hex">#2468a2</span>
+            </div>
+            <div class="color-swatch" style="background: #f0a0a4; color: #000" onclick="copyColor('#f0a0a4')">
+                <span class="name">薄紅</span>
+                <span class="hex">#f0a0a4</span>
+            </div>
+            <div class="color-swatch" style="background: #b7282e; color: #fff" onclick="copyColor('#b7282e')">
+                <span class="name">茜色</span>
+                <span class="hex">#b7282e</span>
             </div>
         </div>
-    </header>
 
-    <div class="container">
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="calendar.html">Calendar</a></li>
-                <li><a href="task.html">Tasks</a></li>
-                <li><a href="color.html">Colors</a></li>
-                <li><a href="MyTime/school_table.html">Schedule</a></li>
-                <li><a href="oldindex.html" class="active">Archive</a></li>
-            </ul>
-        </nav>
+        <div class="music-card">
+            <p class="music-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/><path d="M8 17V5l12-2v12"/></svg>
+                Music Player
+            </p>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="450" src="//music.163.com/outchain/player?type=0&id=384744072&auto=0&height=430"></iframe>
+        </div>
+    </main>
 
-        <main>
-            <section class="hero">
-                <h2>Welcome to my GitHub</h2>
-                <p>This is the archived version of the original homepage with classic features.</p>
-            </section>
-
-            <div class="date-widget" onclick="showFullDate()">
-                <div class="weekday" id="weekday">Loading...</div>
-                <div class="day" id="day-number">--</div>
-                <div class="full-date" id="full-date-text"></div>
-            </div>
-
-            <div class="controls">
-                <button class="btn" onclick="changeBackground()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                    Switch Background
-                </button>
-                <button class="btn" id="palette-btn" onclick="togglePalette()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"></circle><circle cx="6.5" cy="13.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>
-                    Color Palette
-                </button>
-            </div>
-
-            <div class="color-palette" id="color-palette">
-                <div class="color-swatch" style="background: #7bbfea; color: white;" onclick="copyColor('#7bbfea')">
-                    <span>勿忘草色</span>
-                    <span>#7bbfea</span>
-                </div>
-                <div class="color-swatch" style="background: #33aedc; color: white;" onclick="copyColor('#33aedc')">
-                    <span>露草色</span>
-                    <span>#33aedc</span>
-                </div>
-                <div class="color-swatch" style="background: #228fbd; color: white;" onclick="copyColor('#228fbd')">
-                    <span>缥色</span>
-                    <span>#228fbd</span>
-                </div>
-                <div class="color-swatch" style="background: #2468a2; color: white;" onclick="copyColor('#2468a2')">
-                    <span>浅缥</span>
-                    <span>#2468a2</span>
-                </div>
-                <div class="color-swatch" style="background: #2570a1; color: white;" onclick="copyColor('#2570a1')">
-                    <span>薄缥</span>
-                    <span>#2570a1</span>
-                </div>
-                <div class="color-swatch" style="background: #2585a6; color: white;" onclick="copyColor('#2585a6')">
-                    <span>薄花色</span>
-                    <span>#2585a6</span>
-                </div>
-            </div>
-
-            <section class="music-section">
-                <h3>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="2.5"></circle><circle cx="17.5" cy="15.5" r="2.5"></circle><path d="M8 17V5l12-2v12"></path></svg>
-                    Music Player
-                </h3>
-                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="450" src="//music.163.com/outchain/player?type=0&id=384744072&auto=0&height=430"></iframe>
-            </section>
-        </main>
-
-        <footer class="footer">
-            <a href="https://github.com/PerfectQing/PerfectQing.github.io" target="_blank">
-                GitHub: PerfectQing/PerfectQing.github.io
-            </a>
-        </footer>
-    </div>
+    <footer>
+        <p class="footer-text">Built with precision</p>
+    </footer>
 
     <script>
         const weekdays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
@@ -435,31 +364,31 @@
             const now = new Date();
             document.getElementById('weekday').textContent = weekdays[now.getDay()];
             document.getElementById('day-number').textContent = now.getDate();
-            document.getElementById('full-date-text').textContent = now.toLocaleString('zh-CN');
+            document.getElementById('full-date').textContent = now.toLocaleString('zh-CN');
         }
         
         updateDate();
         setInterval(updateDate, 1000);
 
-        function showFullDate() {
-            const el = document.getElementById('full-date-text');
+        function toggleFullDate() {
+            const el = document.getElementById('full-date');
             el.style.opacity = el.style.opacity === '1' ? '0' : '1';
         }
 
         let bgIndex = 0;
         const backgrounds = [
-            'var(--bg-primary)',
-            'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
-            'linear-gradient(135deg, #0f0f23 0%, #1a1a3a 100%)'
+            '#09090b',
+            '#0f0f1a',
+            '#0a1628'
         ];
 
         function changeBackground() {
             bgIndex = (bgIndex + 1) % backgrounds.length;
-            document.body.style.background = backgrounds[bgIndex];
+            document.body.style.setProperty('--bg', backgrounds[bgIndex]);
         }
 
         function togglePalette() {
-            const palette = document.getElementById('color-palette');
+            const palette = document.getElementById('palette');
             const btn = document.getElementById('palette-btn');
             palette.classList.toggle('show');
             btn.classList.toggle('active');

@@ -3,250 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tasks — PerfectQing</title>
+    <title>Tasks</title>
     <link rel="icon" href="style/images/home.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+        
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
         :root {
-            --bg-primary: #0a0a0b;
-            --bg-secondary: #111113;
-            --bg-tertiary: #18181b;
-            --bg-card: rgba(24, 24, 27, 0.6);
-            --bg-card-hover: rgba(39, 39, 42, 0.8);
-            --border-primary: rgba(63, 63, 70, 0.4);
-            --border-hover: rgba(99, 102, 241, 0.5);
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-tertiary: #71717a;
-            --accent: #6366f1;
-            --accent-light: #818cf8;
-            --accent-glow: rgba(99, 102, 241, 0.15);
+            --bg: #09090b;
+            --surface: #131316;
+            --surface-hover: #1a1a1f;
+            --border: rgba(255, 255, 255, 0.05);
+            --border-hover: rgba(255, 255, 255, 0.1);
+            --text: #fafafa;
+            --text-secondary: rgba(255, 255, 255, 0.55);
+            --text-muted: rgba(255, 255, 255, 0.3);
             --success: #22c55e;
-            --warning: #f59e0b;
             --danger: #ef4444;
-            --radius: 16px;
-            --radius-sm: 10px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 16px; -webkit-font-smoothing: antialiased; }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.01em;
         }
 
-        body::before {
+        body::after {
             content: '';
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
             pointer-events: none;
-            z-index: 0;
+            z-index: 10000;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Header */
-        .header {
-            padding: 24px 0;
-            border-bottom: 1px solid var(--border-primary);
-            backdrop-filter: blur(12px);
-            background: rgba(10, 10, 11, 0.8);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-inner {
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 56px;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
+            padding: 0 40px;
+            z-index: 100;
+            background: rgba(9, 9, 11, 0.6);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            color: var(--text);
             text-decoration: none;
-            color: inherit;
-        }
-
-        .logo {
-            width: 44px;
-            height: 44px;
-            border-radius: var(--radius-sm);
-            background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-            color: white;
+            gap: 10px;
         }
 
-        .brand-text h1 { font-size: 18px; font-weight: 600; }
-        .brand-text p { font-size: 13px; color: var(--text-tertiary); }
+        .nav-logo span { width: 6px; height: 6px; background: var(--text); border-radius: 50%; }
 
-        /* Navigation */
-        nav { padding: 20px 0; }
+        .nav-links { display: flex; gap: 6px; }
 
-        nav ul {
-            display: flex;
-            gap: 8px;
-            list-style: none;
-            flex-wrap: wrap;
-        }
-
-        nav a {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 450;
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 9999px;
-            border: 1px solid transparent;
-            transition: var(--transition);
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
         }
 
-        nav a:hover {
-            color: var(--text-primary);
-            background: var(--bg-tertiary);
-            border-color: var(--border-primary);
-        }
+        .nav-links a:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
+        .nav-links a.active { color: var(--text); background: rgba(255, 255, 255, 0.06); }
 
-        nav a.active {
-            color: var(--accent-light);
-            background: var(--accent-glow);
-            border-color: var(--border-hover);
-        }
-
-        /* Main */
         main {
-            padding: 48px 0 80px;
+            padding: 120px 40px 100px;
+            max-width: 700px;
+            margin: 0 auto;
         }
 
         .page-header {
-            margin-bottom: 32px;
+            margin-bottom: 48px;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
         }
 
-        .page-header h2 {
-            font-size: 32px;
+        .page-header-left {}
+
+        .page-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 12px;
+        }
+
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+        }
+
+        .stats {
+            display: flex;
+            gap: 16px;
+        }
+
+        .stat {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
             font-weight: 600;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
         }
 
-        .page-header p {
-            color: var(--text-secondary);
-            font-size: 16px;
+        .stat-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 2px;
         }
 
-        .stats-badges {
+        /* Input */
+        .task-input-wrapper {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 6px;
             display: flex;
-            gap: 12px;
-        }
-
-        .badge {
-            padding: 8px 16px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: 9999px;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
             gap: 8px;
-        }
-
-        .badge .count {
-            font-weight: 600;
-            color: var(--accent-light);
-        }
-
-        /* Task Input */
-        .task-input-container {
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius);
-            padding: 20px;
             margin-bottom: 32px;
-            display: flex;
-            gap: 12px;
+            transition: border-color 0.2s;
+        }
+
+        .task-input-wrapper:focus-within {
+            border-color: var(--border-hover);
         }
 
         .task-input {
             flex: 1;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius-sm);
-            padding: 14px 18px;
-            font-size: 15px;
-            color: var(--text-primary);
+            background: transparent;
+            border: none;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--text);
             outline: none;
-            transition: var(--transition);
         }
 
         .task-input::placeholder {
-            color: var(--text-tertiary);
-        }
-
-        .task-input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-glow);
+            color: var(--text-muted);
         }
 
         .add-btn {
-            padding: 14px 28px;
-            background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+            padding: 12px 24px;
+            background: var(--text);
             border: none;
-            border-radius: var(--radius-sm);
-            color: white;
-            font-size: 14px;
+            border-radius: 8px;
+            color: var(--bg);
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.15s ease;
         }
 
         .add-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.4);
+            opacity: 0.9;
         }
 
-        /* Task List */
+        /* Task list */
         .task-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
         .task-item {
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius);
-            padding: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 20px;
             display: flex;
             align-items: center;
             gap: 16px;
-            transition: var(--transition);
+            transition: all 0.2s ease;
         }
 
         .task-item:hover {
@@ -254,29 +213,29 @@
         }
 
         .task-item.completed {
-            opacity: 0.6;
+            opacity: 0.5;
         }
 
         .task-item.completed .task-text {
             text-decoration: line-through;
-            color: var(--text-tertiary);
+            color: var(--text-muted);
         }
 
         .checkbox {
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--border-primary);
-            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            border: 1.5px solid var(--border-hover);
+            border-radius: 6px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition);
+            transition: all 0.15s ease;
             flex-shrink: 0;
         }
 
         .checkbox:hover {
-            border-color: var(--accent);
+            border-color: var(--text-secondary);
         }
 
         .task-item.completed .checkbox {
@@ -285,9 +244,10 @@
         }
 
         .checkbox svg {
-            width: 14px;
-            height: 14px;
-            color: white;
+            width: 12px;
+            height: 12px;
+            stroke: white;
+            stroke-width: 3;
             opacity: 0;
         }
 
@@ -297,22 +257,22 @@
 
         .task-text {
             flex: 1;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .delete-btn {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             background: none;
             border: none;
-            border-radius: 8px;
-            color: var(--text-tertiary);
+            border-radius: 6px;
+            color: var(--text-muted);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: var(--transition);
+            transition: all 0.15s ease;
         }
 
         .task-item:hover .delete-btn {
@@ -324,153 +284,91 @@
             color: var(--danger);
         }
 
-        /* Empty State */
+        /* Empty state */
         .empty-state {
             text-align: center;
-            padding: 64px 20px;
-            color: var(--text-tertiary);
+            padding: 80px 20px;
         }
 
         .empty-state svg {
-            width: 64px;
-            height: 64px;
+            width: 48px;
+            height: 48px;
+            color: var(--text-muted);
             margin-bottom: 20px;
-            opacity: 0.3;
+            opacity: 0.4;
         }
 
         .empty-state p {
-            font-size: 15px;
-        }
-
-        /* Image Section */
-        .image-section {
-            margin-top: 48px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius);
-            padding: 24px;
-        }
-
-        .image-section h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .image-section img {
-            width: 100%;
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-primary);
-        }
-
-        /* Footer */
-        .footer {
-            padding: 32px 0;
-            border-top: 1px solid var(--border-primary);
-            text-align: center;
-        }
-
-        .footer a {
-            color: var(--text-tertiary);
-            text-decoration: none;
+            color: var(--text-muted);
             font-size: 14px;
-            transition: var(--transition);
         }
 
-        .footer a:hover {
-            color: var(--accent-light);
+        footer {
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            margin-top: 80px;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: var(--text-muted);
         }
 
         @media (max-width: 640px) {
-            .page-header {
-                flex-direction: column;
-                gap: 20px;
-            }
-            .task-input-container {
-                flex-direction: column;
-            }
-            .stats-badges {
-                width: 100%;
-            }
-            .badge {
-                flex: 1;
-                justify-content: center;
-            }
+            nav { padding: 0 16px; }
+            main { padding: 100px 16px 40px; }
+            .nav-links { display: none; }
+            .page-header { flex-direction: column; gap: 24px; }
+            .stats { width: 100%; }
+            .stat { flex: 1; }
+            .task-input-wrapper { flex-direction: column; }
+            .add-btn { width: 100%; }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="header-inner">
-                <a href="index.html" class="brand">
-                    <div class="logo">PQ</div>
-                    <div class="brand-text">
-                        <h1>PerfectQing</h1>
-                        <p>Task Manager</p>
-                    </div>
-                </a>
-            </div>
+    <nav>
+        <a href="index.html" class="nav-logo"><span></span>Dashboard</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="color.html">Colors</a>
+            <a href="task.html" class="active">Tasks</a>
+            <a href="MyTime/school_table.html">Schedule</a>
         </div>
-    </header>
+    </nav>
 
-    <div class="container">
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="calendar.html">Calendar</a></li>
-                <li><a href="task.html" class="active">Tasks</a></li>
-                <li><a href="color.html">Colors</a></li>
-                <li><a href="MyTime/school_table.html">Schedule</a></li>
-                <li><a href="oldindex.html">Archive</a></li>
-            </ul>
-        </nav>
-
-        <main>
-            <div class="page-header">
-                <div>
-                    <h2>Tasks</h2>
-                    <p>Organize your day with a simple task list.</p>
+    <main>
+        <header class="page-header">
+            <div class="page-header-left">
+                <p class="page-eyebrow">Productivity</p>
+                <h1 class="page-title">Tasks</h1>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" id="total-count">0</div>
+                    <div class="stat-label">Total</div>
                 </div>
-                <div class="stats-badges">
-                    <div class="badge">
-                        <span>Total</span>
-                        <span class="count" id="total-count">0</span>
-                    </div>
-                    <div class="badge">
-                        <span>Done</span>
-                        <span class="count" id="done-count">0</span>
-                    </div>
+                <div class="stat">
+                    <div class="stat-value" id="done-count">0</div>
+                    <div class="stat-label">Done</div>
                 </div>
             </div>
+        </header>
 
-            <div class="task-input-container">
-                <input type="text" class="task-input" id="task-input" placeholder="Add a new task..." onkeypress="if(event.key === 'Enter') addTask()">
-                <button class="add-btn" onclick="addTask()">Add Task</button>
-            </div>
+        <div class="task-input-wrapper">
+            <input type="text" class="task-input" id="task-input" placeholder="Add a new task..." onkeypress="if(event.key === 'Enter') addTask()">
+            <button class="add-btn" onclick="addTask()">Add</button>
+        </div>
 
-            <div class="task-list" id="task-list">
-                <!-- Tasks will be rendered here -->
-            </div>
+        <div class="task-list" id="task-list"></div>
+    </main>
 
-            <section class="image-section">
-                <h3>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                    Reference
-                </h3>
-                <img src="Resources/requirement.png" alt="Reference Image">
-            </section>
-        </main>
-
-        <footer class="footer">
-            <a href="https://github.com/PerfectQing/PerfectQing.github.io" target="_blank">
-                GitHub: PerfectQing/PerfectQing.github.io
-            </a>
-        </footer>
-    </div>
+    <footer>
+        <p class="footer-text">Built with precision</p>
+    </footer>
 
     <script>
         let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
@@ -485,46 +383,44 @@
             document.getElementById('done-count').textContent = tasks.filter(t => t.completed).length;
         }
 
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         function renderTasks() {
             const list = document.getElementById('task-list');
             
             if (tasks.length === 0) {
                 list.innerHTML = `
                     <div class="empty-state">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 11l3 3L22 4"></path>
-                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M9 11l3 3L22 4"/>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
                         </svg>
-                        <p>No tasks yet. Add one above to get started!</p>
+                        <p>No tasks yet. Add one above.</p>
                     </div>
                 `;
                 return;
             }
 
             list.innerHTML = tasks.map((task, index) => `
-                <div class="task-item ${task.completed ? 'completed' : ''}" data-index="${index}">
+                <div class="task-item ${task.completed ? 'completed' : ''}">
                     <div class="checkbox" onclick="toggleTask(${index})">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg>
                     </div>
                     <span class="task-text">${escapeHtml(task.text)}</span>
                     <button class="delete-btn" onclick="deleteTask(${index})">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
                         </svg>
                     </button>
                 </div>
             `).join('');
             
             updateCounts();
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
         }
 
         function addTask() {
@@ -551,7 +447,6 @@
             renderTasks();
         }
 
-        // Initial render
         renderTasks();
     </script>
 </body>

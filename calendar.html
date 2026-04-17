@@ -3,361 +3,391 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar — PerfectQing</title>
+    <title>Calendar</title>
     <link rel="icon" href="style/images/home.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+        
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
         :root {
-            --bg-primary: #0a0a0b;
-            --bg-secondary: #111113;
-            --bg-tertiary: #18181b;
-            --bg-card: rgba(24, 24, 27, 0.6);
-            --bg-card-hover: rgba(39, 39, 42, 0.8);
-            --border-primary: rgba(63, 63, 70, 0.4);
-            --border-hover: rgba(99, 102, 241, 0.5);
-            --text-primary: #fafafa;
-            --text-secondary: #a1a1aa;
-            --text-tertiary: #71717a;
-            --accent: #6366f1;
-            --accent-light: #818cf8;
-            --accent-glow: rgba(99, 102, 241, 0.15);
-            --warning: #f59e0b;
-            --radius: 16px;
-            --radius-sm: 10px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg: #09090b;
+            --surface: #131316;
+            --surface-hover: #1a1a1f;
+            --border: rgba(255, 255, 255, 0.05);
+            --border-hover: rgba(255, 255, 255, 0.1);
+            --text: #fafafa;
+            --text-secondary: rgba(255, 255, 255, 0.55);
+            --text-muted: rgba(255, 255, 255, 0.3);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.01em;
         }
 
-        body::before {
+        body::after {
             content: '';
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
             pointer-events: none;
-            z-index: 0;
+            z-index: 10000;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Header */
-        .header {
-            padding: 24px 0;
-            border-bottom: 1px solid var(--border-primary);
-            backdrop-filter: blur(12px);
-            background: rgba(10, 10, 11, 0.8);
-            position: sticky;
+        nav {
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
             z-index: 100;
+            background: rgba(9, 9, 11, 0.6);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
         }
 
-        .header-inner {
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo span {
+            width: 6px;
+            height: 6px;
+            background: var(--text);
+            border-radius: 50%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 6px;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 450;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-links a:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
+        .nav-links a.active { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+
+        main {
+            padding: 140px 40px 100px;
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+        }
+
+        .hero-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 24px;
+        }
+
+        .hero-date {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(100px, 18vw, 200px);
+            font-weight: 700;
+            letter-spacing: -0.06em;
+            line-height: 0.85;
+            margin-bottom: 16px;
+        }
+
+        .hero-full-date {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        /* Quote */
+        .quote-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px 32px;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .quote-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-style: italic;
+        }
+
+        /* Countdown */
+        .countdown-section {
+            text-align: center;
+        }
+
+        .countdown-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+
+        .countdown {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .countdown .sep {
+            color: var(--text-muted);
+            margin: 0 4px;
+            font-size: 32px;
+        }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* Full Calendar */
+        .calendar-section {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 24px;
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .logo {
-            width: 44px;
-            height: 44px;
-            border-radius: var(--radius-sm);
-            background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-            color: white;
-        }
-
-        .brand-text h1 {
+        .calendar-title {
+            font-family: 'Space Grotesk', sans-serif;
             font-size: 18px;
             font-weight: 600;
         }
 
-        .brand-text p {
-            font-size: 13px;
-            color: var(--text-tertiary);
-        }
-
-        /* Navigation */
-        nav {
-            padding: 20px 0;
-        }
-
-        nav ul {
+        .calendar-nav {
             display: flex;
             gap: 8px;
-            list-style: none;
-            flex-wrap: wrap;
         }
 
-        nav a {
+        .calendar-nav button {
+            width: 32px;
+            height: 32px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            border-radius: 9999px;
-            border: 1px solid transparent;
-            transition: var(--transition);
+            justify-content: center;
+            transition: all 0.15s ease;
         }
 
-        nav a:hover {
-            color: var(--text-primary);
-            background: var(--bg-tertiary);
-            border-color: var(--border-primary);
-        }
-
-        nav a.active {
-            color: var(--accent-light);
-            background: var(--accent-glow);
+        .calendar-nav button:hover {
+            background: var(--surface-hover);
             border-color: var(--border-hover);
+            color: var(--text);
         }
 
-        /* Main Content */
-        main {
-            padding: 48px 0 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 48px;
-        }
-
-        /* Calendar Card */
-        .calendar-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius);
-            padding: 48px;
-            width: 100%;
-            max-width: 480px;
-            text-align: center;
-            backdrop-filter: blur(8px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .calendar-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent), #8b5cf6, var(--warning));
-        }
-
-        .full-date {
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 24px;
-            letter-spacing: 0.5px;
-        }
-
-        .day-number {
-            font-size: 120px;
-            font-weight: 700;
-            line-height: 1;
-            background: linear-gradient(135deg, var(--accent-light) 0%, var(--warning) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 24px;
-        }
-
-        .quote-box {
-            padding: 20px 24px;
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-sm);
-            border: 1px solid var(--border-primary);
-            margin-bottom: 32px;
-        }
-
-        .quote-box p {
-            font-size: 15px;
-            color: var(--text-secondary);
-            font-style: italic;
-            line-height: 1.7;
-        }
-
-        .countdown-label {
-            font-size: 13px;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-        }
-
-        .countdown {
-            font-size: 36px;
-            font-weight: 600;
-            color: var(--text-primary);
-            font-variant-numeric: tabular-nums;
-            letter-spacing: 2px;
-        }
-
-        .countdown span {
-            color: var(--text-tertiary);
-            font-size: 14px;
-            font-weight: 400;
-            margin: 0 4px;
-        }
-
-        /* Stats Row */
-        .stats-row {
+        .calendar-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            width: 100%;
-            max-width: 720px;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
         }
 
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius);
-            padding: 24px;
+        .calendar-weekday {
             text-align: center;
-            backdrop-filter: blur(8px);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 12px 0;
         }
 
-        .stat-card .value {
-            font-size: 32px;
-            font-weight: 600;
-            color: var(--accent-light);
-            margin-bottom: 8px;
-        }
-
-        .stat-card .label {
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 13px;
-            color: var(--text-tertiary);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
         }
 
-        /* Footer */
-        .footer {
-            padding: 32px 0;
-            border-top: 1px solid var(--border-primary);
-            text-align: center;
+        .calendar-day:hover {
+            background: var(--surface);
         }
 
-        .footer a {
-            color: var(--text-tertiary);
-            text-decoration: none;
-            font-size: 14px;
-            transition: var(--transition);
+        .calendar-day.today {
+            background: var(--text);
+            color: var(--bg);
+            font-weight: 600;
         }
 
-        .footer a:hover {
-            color: var(--accent-light);
+        .calendar-day.other-month {
+            color: var(--text-muted);
         }
 
-        @media (max-width: 768px) {
-            .calendar-card { padding: 32px 24px; }
-            .day-number { font-size: 80px; }
-            .countdown { font-size: 24px; }
-            .stats-row { grid-template-columns: 1fr; }
+        footer {
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+        .footer-text {
+            font-size: 12px;
+            color: var(--text-muted);
         }
 
-        .countdown {
-            animation: pulse 2s ease-in-out infinite;
+        @media (max-width: 640px) {
+            nav { padding: 0 16px; }
+            main { padding: 100px 16px 40px; }
+            .nav-links { display: none; }
+            .hero-date { font-size: 80px; }
+            .countdown { font-size: 32px; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="header-inner">
-                <a href="index.html" class="brand">
-                    <div class="logo">PQ</div>
-                    <div class="brand-text">
-                        <h1>PerfectQing</h1>
-                        <p>Calendar</p>
-                    </div>
-                </a>
+    <nav>
+        <a href="index.html" class="nav-logo"><span></span>Dashboard</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="calendar.html" class="active">Calendar</a>
+            <a href="color.html">Colors</a>
+            <a href="task.html">Tasks</a>
+            <a href="MyTime/school_table.html">Schedule</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <p class="hero-eyebrow">Today</p>
+            <h1 class="hero-date" id="day-number">--</h1>
+            <p class="hero-full-date" id="full-date">Loading...</p>
+        </section>
+
+        <div class="quote-card">
+            <p class="quote-text" id="quote">Loading...</p>
+        </div>
+
+        <section class="countdown-section">
+            <p class="countdown-label">Time Remaining Today</p>
+            <div class="countdown" id="countdown">00<span class="sep">:</span>00<span class="sep">:</span>00</div>
+        </section>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="week-number">--</div>
+                <div class="stat-label">Week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="day-of-year">--</div>
+                <div class="stat-label">Day of Year</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="days-left">--</div>
+                <div class="stat-label">Days Left</div>
             </div>
         </div>
-    </header>
 
-    <div class="container">
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="calendar.html" class="active">Calendar</a></li>
-                <li><a href="task.html">Tasks</a></li>
-                <li><a href="color.html">Colors</a></li>
-                <li><a href="MyTime/school_table.html">Schedule</a></li>
-                <li><a href="oldindex.html">Archive</a></li>
-            </ul>
-        </nav>
-
-        <main>
-            <div class="calendar-card">
-                <div class="full-date" id="fulldate"></div>
-                <div class="day-number" id="nowdate"></div>
-                <div class="quote-box">
-                    <p id="quote"></p>
-                </div>
-                <div class="countdown-label">Time Remaining Today</div>
-                <div class="countdown" id="countdown"></div>
-            </div>
-
-            <div class="stats-row">
-                <div class="stat-card">
-                    <div class="value" id="week-number">--</div>
-                    <div class="label">Week of Year</div>
-                </div>
-                <div class="stat-card">
-                    <div class="value" id="day-of-year">--</div>
-                    <div class="label">Day of Year</div>
-                </div>
-                <div class="stat-card">
-                    <div class="value" id="days-left">--</div>
-                    <div class="label">Days Left in Year</div>
+        <section class="calendar-section">
+            <div class="calendar-header">
+                <h2 class="calendar-title" id="calendar-title">Month 2024</h2>
+                <div class="calendar-nav">
+                    <button onclick="changeMonth(-1)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <button onclick="changeMonth(1)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
                 </div>
             </div>
-        </main>
+            <div class="calendar-grid" id="calendar-grid"></div>
+        </section>
+    </main>
 
-        <footer class="footer">
-            <a href="https://github.com/PerfectQing/PerfectQing.github.io" target="_blank">
-                GitHub: PerfectQing/PerfectQing.github.io
-            </a>
-        </footer>
-    </div>
+    <footer>
+        <p class="footer-text">Built with precision</p>
+    </footer>
 
     <script>
         const quotes = [
@@ -376,6 +406,11 @@
         ];
 
         const dayArr = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+        const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
 
         function init() {
             const now = new Date();
@@ -384,28 +419,19 @@
             const date = now.getDate();
             const hours = now.getHours();
 
-            // Full date
-            document.getElementById('fulldate').textContent = 
-                `${year} 年 ${month + 1} 月 ${date} 日  ${dayArr[now.getDay()]}`;
-
-            // Day number
-            document.getElementById('nowdate').textContent = date;
-
-            // Quote based on hour
+            document.getElementById('day-number').textContent = date;
+            document.getElementById('full-date').textContent = `${year} 年 ${month + 1} 月 ${date} 日  ${dayArr[now.getDay()]}`;
             document.getElementById('quote').textContent = quotes[Math.floor(hours / 2)];
 
-            // Week number
             const startOfYear = new Date(year, 0, 1);
             const days = Math.floor((now - startOfYear) / (24 * 60 * 60 * 1000));
             document.getElementById('week-number').textContent = Math.ceil((days + startOfYear.getDay() + 1) / 7);
-
-            // Day of year
             document.getElementById('day-of-year').textContent = days + 1;
 
-            // Days left in year
             const endOfYear = new Date(year, 11, 31);
-            const daysLeft = Math.ceil((endOfYear - now) / (24 * 60 * 60 * 1000));
-            document.getElementById('days-left').textContent = daysLeft;
+            document.getElementById('days-left').textContent = Math.ceil((endOfYear - now) / (24 * 60 * 60 * 1000));
+            
+            renderCalendar();
         }
 
         function updateCountdown() {
@@ -413,18 +439,48 @@
             const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
             const ms = Math.max(0, endOfDay - now);
 
-            const h = Math.floor(ms / (1000 * 60 * 60));
-            const m = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((ms % (1000 * 60)) / 1000);
+            const h = String(Math.floor(ms / (1000 * 60 * 60))).padStart(2, '0');
+            const m = String(Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+            const s = String(Math.floor((ms % (1000 * 60)) / 1000)).padStart(2, '0');
 
-            document.getElementById('countdown').innerHTML = 
-                `${String(h).padStart(2, '0')}<span>h</span>${String(m).padStart(2, '0')}<span>m</span>${String(s).padStart(2, '0')}<span>s</span>`;
+            document.getElementById('countdown').innerHTML = `${h}<span class="sep">:</span>${m}<span class="sep">:</span>${s}`;
+        }
 
-            // Update quote every minute
-            if (s === 0) {
-                const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-                document.getElementById('quote').textContent = randomQuote;
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            const today = new Date();
+            
+            document.getElementById('calendar-title').textContent = `${months[currentMonth]} ${currentYear}`;
+            
+            let html = weekdays.map(d => `<div class="calendar-weekday">${d}</div>`).join('');
+            
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const prevLastDay = new Date(currentYear, currentMonth, 0);
+            
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                const day = prevLastDay.getDate() - firstDay.getDay() + i + 1;
+                html += `<div class="calendar-day other-month">${day}</div>`;
             }
+            
+            for (let d = 1; d <= lastDay.getDate(); d++) {
+                const isToday = d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
+                html += `<div class="calendar-day${isToday ? ' today' : ''}">${d}</div>`;
+            }
+            
+            const remaining = 42 - (firstDay.getDay() + lastDay.getDate());
+            for (let i = 1; i <= remaining; i++) {
+                html += `<div class="calendar-day other-month">${i}</div>`;
+            }
+            
+            grid.innerHTML = html;
+        }
+
+        function changeMonth(delta) {
+            currentMonth += delta;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar();
         }
 
         init();
