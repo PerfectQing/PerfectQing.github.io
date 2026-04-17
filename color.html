@@ -1,47 +1,440 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color</title>
-    <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/color.css">
-    <script src="javascript/main.js"></script>
-	<link rel="icon" href="style/images/home.png">
+    <title>Colors</title>
+    <link rel="icon" href="style/images/home.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #09090b;
+            --surface: #131316;
+            --surface-hover: #1a1a1f;
+            --border: rgba(255, 255, 255, 0.05);
+            --border-hover: rgba(255, 255, 255, 0.1);
+            --text: #fafafa;
+            --text-secondary: rgba(255, 255, 255, 0.55);
+            --text-muted: rgba(255, 255, 255, 0.3);
+        }
+
+        html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            letter-spacing: -0.01em;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 100;
+            background: rgba(9, 9, 11, 0.6);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo span { width: 6px; height: 6px; background: var(--text); border-radius: 50%; }
+
+        .nav-links { display: flex; gap: 6px; }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 450;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-links a:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
+        .nav-links a.active { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+
+        main {
+            padding: 120px 40px 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            margin-bottom: 60px;
+        }
+
+        .page-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 16px;
+        }
+
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            margin-bottom: 12px;
+        }
+
+        .page-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 500px;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 64px;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Color grid */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .color-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .color-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .color-swatch {
+            height: 80px;
+            position: relative;
+        }
+
+        .color-swatch::after {
+            content: 'Copy';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .color-card:hover .color-swatch::after {
+            opacity: 1;
+        }
+
+        .color-info {
+            padding: 14px 16px;
+        }
+
+        .color-name {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .color-hex {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Shades */
+        .shades-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .shade-row {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .shade-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .shade-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .shade-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .shade-list {
+            display: flex;
+            gap: 4px;
+        }
+
+        .shade {
+            flex: 1;
+            height: 48px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        .shade:hover {
+            transform: scale(1.08);
+            z-index: 1;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10001;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast svg { color: #22c55e; }
+
+        footer {
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 640px) {
+            nav { padding: 0 16px; }
+            main { padding: 100px 16px 40px; }
+            .nav-links { display: none; }
+            .shade-list { flex-wrap: wrap; }
+            .shade { min-width: 40px; flex: none; }
+        }
+    </style>
 </head>
-
 <body>
-    <div class="header">
-        <ul>
-            <li><a href="index.html">主页</a></li>
-            <li><a href="task.html">任务清单</a></li>
-            <li><a href="calendar.html">日历</a></li>
-            <li class="active"><a href="color.html">调色板</a></li>
-            <li onclick="showImage()">联系我</li>
-            <li><a href="oldindex.html">旧主页</a></li>
-        </ul>
-    </div>
-    <div class="content">
-        <div class="colors">
-            <div data-react-class="Colors"
-                data-react-props="{&quot;colors&quot;:[{&quot;name&quot;:&quot;red&quot;,&quot;key&quot;:&quot;red&quot;,&quot;android&quot;:&quot;red&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#f44336&quot;,&quot;contrast&quot;:&quot;white&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#ffebee&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#ffcdd2&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#ef9a9a&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#e57373&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#ef5350&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#f44336&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#e53935&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#d32f2f&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#c62828&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#b71c1c&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#ff8a80&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#ff5252&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#ff1744&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#d50000&quot;,&quot;contrast&quot;:&quot;white&quot;}]},{&quot;name&quot;:&quot;pink&quot;,&quot;key&quot;:&quot;pink&quot;,&quot;android&quot;:&quot;pink&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#e91e63&quot;,&quot;contrast&quot;:&quot;white&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#fce4ec&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#f8bbd0&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#f48fb1&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#f06292&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#ec407a&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#e91e63&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#d81b60&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#c2185b&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#ad1457&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#880e4f&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#ff80ab&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#ff4081&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#f50057&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#c51162&quot;,&quot;contrast&quot;:&quot;white&quot;}]},{&quot;name&quot;:&quot;purple&quot;,&quot;key&quot;:&quot;purple&quot;,&quot;android&quot;:&quot;purple&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#9c27b0&quot;,&quot;contrast&quot;:&quot;white&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#f3e5f5&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#e1bee7&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#ce93d8&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#ba68c8&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#ab47bc&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#9c27b0&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#8e24aa&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#7b1fa2&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#6a1b9a&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#4a148c&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#ea80fc&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#e040fb&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#d500f9&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#aa00ff&quot;,&quot;contrast&quot;:&quot;white&quot;}]},{&quot;name&quot;:&quot;deep purple&quot;,&quot;key&quot;:&quot;deep-purple&quot;,&quot;android&quot;:&quot;deep_purple&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#673ab7&quot;,&quot;contrast&quot;:&quot;white&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#ede7f6&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#d1c4e9&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#b39ddb&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#9575cd&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#7e57c2&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#673ab7&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#5e35b1&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#512da8&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#4527a0&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#311b92&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#b388ff&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#7c4dff&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#651fff&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#6200ea&quot;,&quot;contrast&quot;:&quot;white&quot;}]},{&quot;name&quot;:&quot;indigo&quot;,&quot;key&quot;:&quot;indigo&quot;,&quot;android&quot;:&quot;indigo&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#3f51b5&quot;,&quot;contrast&quot;:&quot;white&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#e8eaf6&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#c5cae9&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#9fa8da&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#7986cb&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#5c6bc0&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#3f51b5&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#3949ab&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#303f9f&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#283593&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#1a237e&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#8c9eff&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#536dfe&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#3d5afe&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#304ffe&quot;,&quot;contrast&quot;:&quot;white&quot;}]},{&quot;name&quot;:&quot;blue&quot;,&quot;key&quot;:&quot;blue&quot;,&quot;android&quot;:&quot;blue&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#2196f3&quot;,&quot;contrast&quot;:&quot;white&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#e3f2fd&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#bbdefb&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#90caf9&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#64b5f6&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#42a5f5&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#2196f3&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#1e88e5&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#1976d2&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#1565c0&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#0d47a1&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#82b1ff&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#448aff&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#2979ff&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#2962ff&quot;,&quot;contrast&quot;:&quot;white&quot;}]},{&quot;name&quot;:&quot;light blue&quot;,&quot;key&quot;:&quot;light-blue&quot;,&quot;android&quot;:&quot;light_blue&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#03a9f4&quot;,&quot;contrast&quot;:&quot;white&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#e1f5fe&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#b3e5fc&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#81d4fa&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#4fc3f7&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#29b6f6&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#03a9f4&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#039be5&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#0288d1&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#0277bd&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#01579b&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#80d8ff&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#40c4ff&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#00b0ff&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#0091ea&quot;,&quot;contrast&quot;:&quot;white&quot;}]},{&quot;name&quot;:&quot;cyan&quot;,&quot;key&quot;:&quot;cyan&quot;,&quot;android&quot;:&quot;cyan&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#00bcd4&quot;,&quot;contrast&quot;:&quot;white&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#e0f7fa&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#b2ebf2&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#80deea&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#4dd0e1&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#26c6da&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#00bcd4&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#00acc1&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#0097a7&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#00838f&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#006064&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#84ffff&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#18ffff&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#00e5ff&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#00b8d4&quot;,&quot;contrast&quot;:&quot;black&quot;}]},{&quot;name&quot;:&quot;teal&quot;,&quot;key&quot;:&quot;teal&quot;,&quot;android&quot;:&quot;teal&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#009688&quot;,&quot;contrast&quot;:&quot;white&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#e0f2f1&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#b2dfdb&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#80cbc4&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#4db6ac&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#26a69a&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#009688&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#00897b&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#00796b&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#00695c&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#004d40&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#a7ffeb&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#64ffda&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#1de9b6&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#00bfa5&quot;,&quot;contrast&quot;:&quot;black&quot;}]},{&quot;name&quot;:&quot;green&quot;,&quot;key&quot;:&quot;green&quot;,&quot;android&quot;:&quot;green&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#4caf50&quot;,&quot;contrast&quot;:&quot;white&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#e8f5e9&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#c8e6c9&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#a5d6a7&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#81c784&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#66bb6a&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#4caf50&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#43a047&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#388e3c&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#2e7d32&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#1b5e20&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#b9f6ca&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#69f0ae&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#00e676&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#00c853&quot;,&quot;contrast&quot;:&quot;black&quot;}]},{&quot;name&quot;:&quot;light green&quot;,&quot;key&quot;:&quot;light-green&quot;,&quot;android&quot;:&quot;light_green&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#8bc34a&quot;,&quot;contrast&quot;:&quot;black&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#f1f8e9&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#dcedc8&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#c5e1a5&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#aed581&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#9ccc65&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#8bc34a&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#7cb342&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#689f38&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#558b2f&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#33691e&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#ccff90&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#b2ff59&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#76ff03&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#64dd17&quot;,&quot;contrast&quot;:&quot;black&quot;}]},{&quot;name&quot;:&quot;lime&quot;,&quot;key&quot;:&quot;lime&quot;,&quot;android&quot;:&quot;lime&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#cddc39&quot;,&quot;contrast&quot;:&quot;black&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#f9fbe7&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#f0f4c3&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#e6ee9c&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#dce775&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#d4e157&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#cddc39&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#c0ca33&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#afb42b&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#9e9d24&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#827717&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#f4ff81&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#eeff41&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#c6ff00&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#aeea00&quot;,&quot;contrast&quot;:&quot;black&quot;}]},{&quot;name&quot;:&quot;yellow&quot;,&quot;key&quot;:&quot;yellow&quot;,&quot;android&quot;:&quot;yellow&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#ffeb3b&quot;,&quot;contrast&quot;:&quot;black&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#fffde7&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#fff9c4&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#fff59d&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#fff176&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#ffee58&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#ffeb3b&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#fdd835&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#fbc02d&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#f9a825&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#f57f17&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#ffff8d&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#ffff00&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#ffea00&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#ffd600&quot;,&quot;contrast&quot;:&quot;black&quot;}]},{&quot;name&quot;:&quot;amber&quot;,&quot;key&quot;:&quot;amber&quot;,&quot;android&quot;:&quot;amber&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#ffc107&quot;,&quot;contrast&quot;:&quot;black&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#fff8e1&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#ffecb3&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#ffe082&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#ffd54f&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#ffca28&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#ffc107&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#ffb300&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#ffa000&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#ff8f00&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#ff6f00&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#ffe57f&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#ffd740&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#ffc400&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#ffab00&quot;,&quot;contrast&quot;:&quot;black&quot;}]},{&quot;name&quot;:&quot;orange&quot;,&quot;key&quot;:&quot;orange&quot;,&quot;android&quot;:&quot;orange&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#ff9800&quot;,&quot;contrast&quot;:&quot;black&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#fff3e0&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#ffe0b2&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#ffcc80&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#ffb74d&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#ffa726&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#ff9800&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#fb8c00&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#f57c00&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#ef6c00&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#e65100&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#ffd180&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#ffab40&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#ff9100&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#ff6d00&quot;,&quot;contrast&quot;:&quot;black&quot;}]},{&quot;name&quot;:&quot;deep orange&quot;,&quot;key&quot;:&quot;deep-orange&quot;,&quot;android&quot;:&quot;deep_orange&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#ff5722&quot;,&quot;contrast&quot;:&quot;white&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#fbe9e7&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#ffccbc&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#ffab91&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#ff8a65&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#ff7043&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#ff5722&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#f4511e&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#e64a19&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#d84315&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#bf360c&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A100&quot;,&quot;hex&quot;:&quot;#ff9e80&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A200&quot;,&quot;hex&quot;:&quot;#ff6e40&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:&quot;A400&quot;,&quot;hex&quot;:&quot;#ff3d00&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:&quot;A700&quot;,&quot;hex&quot;:&quot;#dd2c00&quot;,&quot;contrast&quot;:&quot;white&quot;}]},{&quot;name&quot;:&quot;brown&quot;,&quot;key&quot;:&quot;brown&quot;,&quot;android&quot;:&quot;brown&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#795548&quot;,&quot;contrast&quot;:&quot;white&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#efebe9&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#d7ccc8&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#bcaaa4&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#a1887f&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#8d6e63&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#795548&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#6d4c41&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#5d4037&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#4e342e&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#3e2723&quot;,&quot;contrast&quot;:&quot;white&quot;}]},{&quot;name&quot;:&quot;grey&quot;,&quot;key&quot;:&quot;grey&quot;,&quot;android&quot;:&quot;grey&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#9e9e9e&quot;,&quot;contrast&quot;:&quot;black&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#fafafa&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#f5f5f5&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#eeeeee&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#e0e0e0&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#bdbdbd&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#9e9e9e&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#757575&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#616161&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#424242&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#212121&quot;,&quot;contrast&quot;:&quot;white&quot;}]},{&quot;name&quot;:&quot;blue grey&quot;,&quot;key&quot;:&quot;blue-grey&quot;,&quot;android&quot;:&quot;blue_grey&quot;,&quot;default&quot;:{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#607d8b&quot;,&quot;contrast&quot;:&quot;white&quot;},&quot;shades&quot;:[{&quot;strength&quot;:50,&quot;hex&quot;:&quot;#eceff1&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:100,&quot;hex&quot;:&quot;#cfd8dc&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:200,&quot;hex&quot;:&quot;#b0bec5&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:300,&quot;hex&quot;:&quot;#90a4ae&quot;,&quot;contrast&quot;:&quot;black&quot;},{&quot;strength&quot;:400,&quot;hex&quot;:&quot;#78909c&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:500,&quot;hex&quot;:&quot;#607d8b&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:600,&quot;hex&quot;:&quot;#546e7a&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:700,&quot;hex&quot;:&quot;#455a64&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:800,&quot;hex&quot;:&quot;#37474f&quot;,&quot;contrast&quot;:&quot;white&quot;},{&quot;strength&quot;:900,&quot;hex&quot;:&quot;#263238&quot;,&quot;contrast&quot;:&quot;white&quot;}]}]}"
-                </div>
-            </div>
+    <nav>
+        <a href="index.html" class="nav-logo"><span></span>Dashboard</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="color.html" class="active">Colors</a>
+            <a href="task.html">Tasks</a>
+            <a href="MyTime/school_table.html">Schedule</a>
         </div>
+    </nav>
+
+    <main>
+        <header class="page-header">
+            <p class="page-eyebrow">Design Tools</p>
+            <h1 class="page-title">Color Palette</h1>
+            <p class="page-desc">Curated colors from Material Design and traditional Japanese aesthetics. Click any color to copy.</p>
+        </header>
+
+        <section class="section">
+            <p class="section-label">Material Colors</p>
+            <div class="color-grid" id="primary-colors"></div>
+        </section>
+
+        <section class="section">
+            <p class="section-label">Color Shades</p>
+            <div class="shades-container" id="shades-container"></div>
+        </section>
+
+        <section class="section">
+            <p class="section-label">Japanese Traditional</p>
+            <div class="color-grid" id="japanese-colors"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p class="footer-text">Built with precision</p>
+    </footer>
+
+    <div class="toast" id="toast">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="toast-text">Copied!</span>
     </div>
+
     <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date(); a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        const materialColors = [
+            { name: 'Red', hex: '#f44336', shades: ['#ffebee', '#ffcdd2', '#ef9a9a', '#e57373', '#ef5350', '#f44336', '#e53935', '#d32f2f', '#c62828', '#b71c1c'] },
+            { name: 'Pink', hex: '#e91e63', shades: ['#fce4ec', '#f8bbd9', '#f48fb1', '#f06292', '#ec407a', '#e91e63', '#d81b60', '#c2185b', '#ad1457', '#880e4f'] },
+            { name: 'Purple', hex: '#9c27b0', shades: ['#f3e5f5', '#e1bee7', '#ce93d8', '#ba68c8', '#ab47bc', '#9c27b0', '#8e24aa', '#7b1fa2', '#6a1b9a', '#4a148c'] },
+            { name: 'Indigo', hex: '#3f51b5', shades: ['#e8eaf6', '#c5cae9', '#9fa8da', '#7986cb', '#5c6bc0', '#3f51b5', '#3949ab', '#303f9f', '#283593', '#1a237e'] },
+            { name: 'Blue', hex: '#2196f3', shades: ['#e3f2fd', '#bbdefb', '#90caf9', '#64b5f6', '#42a5f5', '#2196f3', '#1e88e5', '#1976d2', '#1565c0', '#0d47a1'] },
+            { name: 'Cyan', hex: '#00bcd4', shades: ['#e0f7fa', '#b2ebf2', '#80deea', '#4dd0e1', '#26c6da', '#00bcd4', '#00acc1', '#0097a7', '#00838f', '#006064'] },
+            { name: 'Teal', hex: '#009688', shades: ['#e0f2f1', '#b2dfdb', '#80cbc4', '#4db6ac', '#26a69a', '#009688', '#00897b', '#00796b', '#00695c', '#004d40'] },
+            { name: 'Green', hex: '#4caf50', shades: ['#e8f5e9', '#c8e6c9', '#a5d6a7', '#81c784', '#66bb6a', '#4caf50', '#43a047', '#388e3c', '#2e7d32', '#1b5e20'] },
+            { name: 'Orange', hex: '#ff9800', shades: ['#fff3e0', '#ffe0b2', '#ffcc80', '#ffb74d', '#ffa726', '#ff9800', '#fb8c00', '#f57c00', '#ef6c00', '#e65100'] },
+            { name: 'Grey', hex: '#9e9e9e', shades: ['#fafafa', '#f5f5f5', '#eeeeee', '#e0e0e0', '#bdbdbd', '#9e9e9e', '#757575', '#616161', '#424242', '#212121'] }
+        ];
 
-        ga('create', 'UA-57681843-1', 'auto');
-        ga('send', 'pageview');
+        const japaneseColors = [
+            { name: '勿忘草色', hex: '#7bbfea' },
+            { name: '露草色', hex: '#33aedc' },
+            { name: '缥色', hex: '#228fbd' },
+            { name: '桜色', hex: '#fef4f4' },
+            { name: '薄紅', hex: '#f0a0a4' },
+            { name: '珊瑚色', hex: '#f5a28f' },
+            { name: '茜色', hex: '#b7282e' },
+            { name: '藤色', hex: '#bbb6da' },
+            { name: '若竹色', hex: '#6cba99' },
+            { name: '山吹色', hex: '#f8b500' },
+            { name: '群青色', hex: '#4c6cb3' },
+            { name: '墨色', hex: '#27292a' }
+        ];
+
+        function getContrastColor(hex) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.5 ? '#000' : '#fff';
+        }
+
+        function copyToClipboard(hex) {
+            navigator.clipboard.writeText(hex).then(() => {
+                const toast = document.getElementById('toast');
+                document.getElementById('toast-text').textContent = `${hex} copied`;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2000);
+            });
+        }
+
+        function createColorCard(color) {
+            const card = document.createElement('div');
+            card.className = 'color-card';
+            card.onclick = () => copyToClipboard(color.hex);
+            card.innerHTML = `
+                <div class="color-swatch" style="background: ${color.hex}"></div>
+                <div class="color-info">
+                    <div class="color-name">${color.name}</div>
+                    <div class="color-hex">${color.hex}</div>
+                </div>
+            `;
+            return card;
+        }
+
+        function createShadeRow(color) {
+            const weights = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
+            const row = document.createElement('div');
+            row.className = 'shade-row';
+            row.innerHTML = `
+                <div class="shade-header">
+                    <div class="shade-dot" style="background: ${color.hex}"></div>
+                    <span class="shade-name">${color.name}</span>
+                </div>
+                <div class="shade-list">
+                    ${color.shades.map((s, i) => `
+                        <div class="shade" style="background: ${s}; color: ${getContrastColor(s)}" onclick="copyToClipboard('${s}')">${weights[i]}</div>
+                    `).join('')}
+                </div>
+            `;
+            return row;
+        }
+
+        // Render
+        const primaryGrid = document.getElementById('primary-colors');
+        materialColors.forEach(c => primaryGrid.appendChild(createColorCard(c)));
+
+        const shadesContainer = document.getElementById('shades-container');
+        materialColors.slice(0, 5).forEach(c => shadesContainer.appendChild(createShadeRow(c)));
+
+        const japaneseGrid = document.getElementById('japanese-colors');
+        japaneseColors.forEach(c => japaneseGrid.appendChild(createColorCard(c)));
     </script>
-
 </body>
-
 </html>

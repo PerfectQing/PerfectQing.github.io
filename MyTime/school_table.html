@@ -2,401 +2,535 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>学生课表查询</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 引入Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule</title>
     <link rel="icon" href="course.png">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+        
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
         :root {
-            --primary-gradient: linear-gradient(120deg, #6a82fb 0%, #fc5c7d 100%);
-            --secondary-gradient: linear-gradient(120deg, #43cea2 0%, #185a9d 100%);
-            --card-bg: #fff;
-            --header-bg: #fff6f6ee;
-            --border-radius: 18px;
-            --shadow: 0 4px 20px 0 rgba(44,62,80,.07);
-            --text-main: #222;
-            --text-sub: #666;
-            --table-header-bg: #f9fafb;
-            --table-row-even: #f6f8fa;
-            --accent: #6a82fb;
+            --bg: #09090b;
+            --surface: #131316;
+            --surface-hover: #1a1a1f;
+            --border: rgba(255, 255, 255, 0.05);
+            --border-hover: rgba(255, 255, 255, 0.1);
+            --text: #fafafa;
+            --text-secondary: rgba(255, 255, 255, 0.55);
+            --text-muted: rgba(255, 255, 255, 0.3);
+            --accent: #22c55e;
         }
+
+        html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
         body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            background: var(--primary-gradient);
-            font-family: 'Roboto', 'Microsoft YaHei', sans-serif;
-            margin: 0;
-            padding: 0;
-            color: var(--text-main);
+            letter-spacing: -0.01em;
         }
-        .container {
-            max-width: 950px;
-            margin: 40px auto 30px;
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 32px 24px 32px 24px;
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 10000;
         }
-        .header-title {
-            text-align: center;
-            font-size: 2.2rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-bottom: 12px;
-            background: var(--secondary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 100;
+            background: rgba(9, 9, 11, 0.6);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
         }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #fff;
-            background: var(--accent);
-            padding: 6px 22px;
-            border-radius: 999px;
+
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            color: var(--text);
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo span { width: 6px; height: 6px; background: var(--text); border-radius: 50%; }
+
+        .nav-links { display: flex; gap: 6px; }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 450;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-links a:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
+        .nav-links a.active { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+
+        main {
+            padding: 120px 40px 100px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            margin-bottom: 48px;
+            text-align: center;
+        }
+
+        .page-eyebrow {
+            font-size: 11px;
             font-weight: 500;
-            font-size: 1rem;
-            box-shadow: 0 2px 8px 0 rgba(106, 130, 251, .14);
-            transition: background .2s;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 16px;
         }
-        .back-link:hover {
-            background: #fc5c7d;
+
+        .page-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            margin-bottom: 12px;
         }
-        .timetable-card {
-            background: var(--header-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 20px 16px;
-            margin-bottom: 30px;
+
+        .page-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        /* Table Card */
+        .table-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
             overflow-x: auto;
+            margin-bottom: 40px;
         }
+
         table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            font-size: 1rem;
+            border-collapse: collapse;
+            font-size: 12px;
         }
+
         th, td {
-            padding: 12px 10px;
-            border: none;
+            padding: 12px 8px;
             text-align: center;
+            border-bottom: 1px solid var(--border);
         }
+
         thead th {
-            background: var(--table-header-bg);
-            color: var(--accent);
-            font-weight: 700;
-            font-size: 1.04rem;
+            background: rgba(255, 255, 255, 0.02);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
-        tbody tr:nth-child(even) {
-            background: var(--table-row-even);
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.01);
         }
-        .section-title {
-            font-size: 1.22rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin: 36px 0 12px 0;
+
+        .period-label {
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
-        .class-info {
-            font-size: 0.98rem;
-            line-height: 1.7;
-            color: var(--text-sub);
-            background: linear-gradient(90deg,#e3ecff 0%, #fff 100%);
-            border-radius: 10px;
-            padding: 8px 6px;
-            box-shadow: 0 2px 6px rgba(106,130,251,.06);
+
+        .class-cell {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: left;
+            border: 1px solid var(--border);
         }
+
+        .class-name {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .class-room {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        /* Current class */
         .current_class {
-            background: linear-gradient(90deg, #fc5c7d 0%, #6a82fb 100%);
-            color: #fff !important;
+            background: var(--accent) !important;
+            color: var(--bg) !important;
+            border-color: var(--accent) !important;
+        }
+
+        .current_class .class-name,
+        .current_class .class-room {
+            color: var(--bg) !important;
+        }
+
+        /* Section */
+        .section-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Time grid */
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 48px;
+        }
+
+        .time-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .time-card-title {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+        }
+
+        .time-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+        }
+
+        .time-item:last-child {
+            border-bottom: none;
+        }
+
+        .time-item span:first-child {
+            color: var(--text-muted);
+        }
+
+        .time-item.current {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* Image */
+        .image-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            font-weight: 700;
-            box-shadow: 0 2px 12px 0 rgba(252,92,125,.19);
+            padding: 20px;
+            margin-bottom: 20px;
         }
-        .schedule-table th, .schedule-table td {
-            font-size: 1rem;
+
+        .image-card-title {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
         }
-        /* 时间表样式 */
-        .time-table th, .time-table td {
-            font-size: 0.99rem;
+
+        .image-card img {
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--border);
         }
-        /* 响应式 */
-        @media (max-width: 700px) {
-            .container { padding: 10px 2px; }
-            .timetable-card { padding: 8px 2px; }
-            table { font-size: 0.91rem; }
+
+        footer {
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 16px; }
+            main { padding: 100px 16px 40px; }
+            .nav-links { display: none; }
+            .time-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header-title">2020-2021 第一学期学生个人课表</div>
-        <a href="../index.html" class="back-link">返回主页</a>
+    <nav>
+        <a href="../index.html" class="nav-logo"><span></span>Dashboard</a>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="../calendar.html">Calendar</a>
+            <a href="../color.html">Colors</a>
+            <a href="../task.html">Tasks</a>
+            <a href="school_table.html" class="active">Schedule</a>
+        </div>
+    </nav>
 
-        <div class="timetable-card">
-            <table class="schedule-table">
+    <main>
+        <header class="page-header">
+            <p class="page-eyebrow">Academic</p>
+            <h1 class="page-title">Course Schedule</h1>
+            <p class="page-desc">2020-2021 First Semester with real-time class highlighting</p>
+        </header>
+
+        <div class="table-card">
+            <table>
                 <thead>
                     <tr>
                         <th></th>
-                        <th>节次</th>
-                        <th>星期一</th>
-                        <th>星期二</th>
-                        <th>星期三</th>
-                        <th>星期四</th>
-                        <th>星期五</th>
-                        <th>星期六</th>
-                        <th>星期日</th>
+                        <th>Period</th>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td rowspan="5" style="font-weight:700;">上午</td>
-                        <td>1&nbsp;&nbsp;8:00-8:45</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr>
-                        <td>2&nbsp;&nbsp;8:55-9:40</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr>
-                        <td>3&nbsp;&nbsp;9:55-10:40</td>
-                        <td></td>
-                        <td rowspan="2">
-                            <div class="class-info">
-                                课程：专业必修课程A<br>
-                                班级：XX班<br>
-                                教室：教学楼A101<br>
-                                周次：1-16<br>
-                                老师：教师甲
-                            </div>
-                        </td>
-                        <td rowspan="2">
-                            <div class="class-info">
-                                课程：专业选修课程B<br>
-                                班级：XX班<br>
-                                教室：教学楼B203<br>
-                                周次：1-16<br>
-                                老师：教师乙
-                            </div>
-                        </td>
-                        <td rowspan="2">
-                            <div class="class-info">
-                                课程：公共基础课程C<br>
-                                班级：XX班<br>
-                                教室：教学楼C305<br>
-                                周次：1-16<br>
-                                老师：教师丙
-                            </div>
-                        </td>
-                        <td rowspan="2">
-                            <div class="class-info">
-                                课程：通识课程D<br>
-                                班级：XX班<br>
-                                教室：教学楼D407<br>
-                                周次：1-8<br>
-                                老师：教师丁
-                            </div>
-                        </td>
-                        <td></td><td></td>
-                    </tr>
-                    <tr>
-                        <td>4&nbsp;&nbsp;10:50-11:35</td>
-                        <td></td><td></td><td></td>
-                    </tr>
-                    <tr>
-                        <td>5&nbsp;&nbsp;11:45-12:30</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr>
-                        <td rowspan="5" style="font-weight:700;">下午</td>
-                        <td>6&nbsp;&nbsp;12:40-13:25</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr>
-                        <td>7&nbsp;&nbsp;13:35-14:20</td>
-                        <td></td>
-                        <td rowspan="2">
-                            <div class="class-info">
-                                课程：综合素质课程E<br>
-                                班级：XX班<br>
-                                教室：教学楼E502<br>
-                                周次：1-8<br>
-                                老师：教师戊
-                            </div>
-                        </td>
-                        <td></td>
-                        <td rowspan="2">
-                            <div class="class-info">
-                                课程：跨学科课程F<br>
-                                班级：XX班<br>
-                                教室：教学楼F606<br>
-                                周次：1-16<br>
-                                老师：教师己
-                            </div>
-                        </td>
-                        <td></td><td></td><td></td>
-                    </tr>
-                    <tr>
-                        <td>8&nbsp;&nbsp;14:30-15:15</td>
+                        <td rowspan="5" class="period-label">AM</td>
+                        <td>1</td>
                         <td></td><td></td><td></td><td></td><td></td>
                     </tr>
                     <tr>
-                        <td>9&nbsp;&nbsp;15:25-16:10</td>
+                        <td>2</td>
+                        <td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
                         <td></td>
                         <td rowspan="2">
-                            <div class="class-info">
-                                课程：英语课程<br>
-                                班级：XX班<br>
-                                教室：教学楼G701<br>
-                                周次：1-16<br>
-                                老师：教师庚
+                            <div class="class-cell">
+                                <div class="class-name">Course A</div>
+                                <div class="class-room">Room A101</div>
                             </div>
                         </td>
                         <td rowspan="2">
-                            <div class="class-info">
-                                课程：数理课程<br>
-                                班级：XX班<br>
-                                教室：教学楼H802<br>
-                                周次：1-16<br>
-                                老师：教师辛
+                            <div class="class-cell">
+                                <div class="class-name">Course B</div>
+                                <div class="class-room">Room B203</div>
+                            </div>
+                        </td>
+                        <td rowspan="2">
+                            <div class="class-cell">
+                                <div class="class-name">Course C</div>
+                                <div class="class-room">Room C305</div>
+                            </div>
+                        </td>
+                        <td rowspan="2">
+                            <div class="class-cell">
+                                <div class="class-name">Course D</div>
+                                <div class="class-room">Room D407</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="5" class="period-label">PM</td>
+                        <td>6</td>
+                        <td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td></td>
+                        <td rowspan="2">
+                            <div class="class-cell">
+                                <div class="class-name">Course E</div>
+                                <div class="class-room">Room E502</div>
                             </div>
                         </td>
                         <td></td>
                         <td rowspan="2">
-                            <div class="class-info">
-                                课程：英语课程<br>
-                                班级：XX班<br>
-                                教室：教学楼G701<br>
-                                周次：1-16<br>
-                                老师：教师庚
+                            <div class="class-cell">
+                                <div class="class-name">Course F</div>
+                                <div class="class-room">Room F606</div>
                             </div>
                         </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td></td>
+                        <td rowspan="2">
+                            <div class="class-cell">
+                                <div class="class-name">English</div>
+                                <div class="class-room">Room G701</div>
+                            </div>
+                        </td>
+                        <td rowspan="2">
+                            <div class="class-cell">
+                                <div class="class-name">Math</div>
+                                <div class="class-room">Room H802</div>
+                            </div>
+                        </td>
+                        <td></td>
+                        <td rowspan="2">
+                            <div class="class-cell">
+                                <div class="class-name">English</div>
+                                <div class="class-room">Room G701</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
                         <td></td><td></td>
                     </tr>
                     <tr>
-                        <td>10&nbsp;&nbsp;16:20-17:05</td>
-                        <td></td><td></td><td></td><td></td>
+                        <td rowspan="3" class="period-label">EVE</td>
+                        <td>11</td>
+                        <td></td><td></td><td></td><td></td><td></td>
                     </tr>
                     <tr>
-                        <td rowspan="5" style="font-weight:700;">晚上</td>
-                        <td>11&nbsp;&nbsp;17:15-18:00</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        <td>12</td>
+                        <td></td><td></td><td></td><td></td><td></td>
                     </tr>
                     <tr>
-                        <td>12&nbsp;&nbsp;18:10-18:55</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr>
-                        <td>13&nbsp;&nbsp;19:05-19:50</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr>
-                        <td>14&nbsp;&nbsp;20:00-20:45</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
-                    <tr>
-                        <td>15&nbsp;&nbsp;20:55-21:40</td>
-                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        <td>13</td>
+                        <td></td><td></td><td></td><td></td><td></td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="section-title">时间点</div>
-        <div class="timetable-card">
-            <table class="time-table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>上午</th>
-                        <th>下午</th>
-                        <th>晚上</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>第一节课</td>
-                        <td id="cl1">8:00-8:45</td>
-                        <td id="cl6">12:40-13:25</td>
-                        <td id="cl11">17:15-18:00</td>
-                    </tr>
-                    <tr>
-                        <td>第二节课</td>
-                        <td id="cl2">8:55-9:40</td>
-                        <td id="cl7">13:35-14:20</td>
-                        <td id="cl12">18:10-18:55</td>
-                    </tr>
-                    <tr>
-                        <td>第三节课</td>
-                        <td id="cl3">9:55-10:40</td>
-                        <td id="cl8">14:30-15:15</td>
-                        <td id="cl13">19:05-19:50</td>
-                    </tr>
-                    <tr>
-                        <td>第四节课</td>
-                        <td id="cl4">10:50-11:35</td>
-                        <td id="cl9">15:25-16:10</td>
-                        <td id="cl14">20:00-20:45</td>
-                    </tr>
-                    <tr>
-                        <td>第五节课</td>
-                        <td id="cl5">11:45-12:30</td>
-                        <td id="cl10">16:20-17:05</td>
-                        <td id="cl15">20:55-21:40</td>
-                    </tr>
-                </tbody>
-            </table>
+        <p class="section-label">Class Times</p>
+
+        <div class="time-grid">
+            <div class="time-card">
+                <p class="time-card-title">Morning</p>
+                <div class="time-item" id="cl1"><span>Period 1</span><span>8:00 - 8:45</span></div>
+                <div class="time-item" id="cl2"><span>Period 2</span><span>8:55 - 9:40</span></div>
+                <div class="time-item" id="cl3"><span>Period 3</span><span>9:55 - 10:40</span></div>
+                <div class="time-item" id="cl4"><span>Period 4</span><span>10:50 - 11:35</span></div>
+                <div class="time-item" id="cl5"><span>Period 5</span><span>11:45 - 12:30</span></div>
+            </div>
+            <div class="time-card">
+                <p class="time-card-title">Afternoon</p>
+                <div class="time-item" id="cl6"><span>Period 6</span><span>12:40 - 13:25</span></div>
+                <div class="time-item" id="cl7"><span>Period 7</span><span>13:35 - 14:20</span></div>
+                <div class="time-item" id="cl8"><span>Period 8</span><span>14:30 - 15:15</span></div>
+                <div class="time-item" id="cl9"><span>Period 9</span><span>15:25 - 16:10</span></div>
+                <div class="time-item" id="cl10"><span>Period 10</span><span>16:20 - 17:05</span></div>
+            </div>
+            <div class="time-card">
+                <p class="time-card-title">Evening</p>
+                <div class="time-item" id="cl11"><span>Period 11</span><span>17:15 - 18:00</span></div>
+                <div class="time-item" id="cl12"><span>Period 12</span><span>18:10 - 18:55</span></div>
+                <div class="time-item" id="cl13"><span>Period 13</span><span>19:05 - 19:50</span></div>
+                <div class="time-item" id="cl14"><span>Period 14</span><span>20:00 - 20:45</span></div>
+                <div class="time-item" id="cl15"><span>Period 15</span><span>20:55 - 21:40</span></div>
+            </div>
         </div>
 
-        <div style="text-align:center;margin-top:24px;">
-            <img style="width:100%;max-width:720px;border-radius:12px;box-shadow:0 2px 16px rgba(44,62,80,.13);" src="./School-calendar.png" alt="校历">
-        </div>
-        <div style="text-align:center;margin-top:12px;">
-            <img style="width:100%;max-width:720px;border-radius:12px;box-shadow:0 2px 12px rgba(252,92,125,.08);" src="./requirement.png" alt="要求">
-        </div>
+        <p class="section-label">Reference</p>
 
-    </div>
-    <!-- 保留原有时间高亮 & 计时功能 -->
+        <div class="image-card">
+            <p class="image-card-title">Academic Calendar</p>
+            <img src="./School-calendar.png" alt="School Calendar">
+        </div>
+    </main>
+
+    <footer>
+        <p class="footer-text">Built with precision</p>
+    </footer>
+
     <script>
-        // 保留原有的高亮当前课程时间段功能
-        function updateCurrentClass() {
-            var date = new Date();
-            var hour = date.getHours();
-            var min = date.getMinutes();
-            // 清除所有高亮
-            for (var i = 1; i <= 15; i++) {
-                var cl = document.getElementById('cl'+i);
-                if(cl) cl.className = '';
-            }
-            // 课程高亮逻辑
-            if (hour === 8 && min <= 45) document.getElementById('cl1').className = "current_class";
-            else if (hour === 8 && min >= 55) document.getElementById('cl2').className = "current_class";
-            else if (hour === 9 && min <= 40) document.getElementById('cl2').className = "current_class";
-            else if (hour === 9 && min >= 55) document.getElementById('cl3').className = "current_class";
-            else if (hour === 10 && min <= 40) document.getElementById('cl3').className = "current_class";
-            else if (hour === 10 && min >= 50) document.getElementById('cl4').className = "current_class";
-            else if (hour === 11 && min <= 35) document.getElementById('cl4').className = "current_class";
-            else if (hour === 11 && min >= 45) document.getElementById('cl5').className = "current_class";
-            else if (hour === 12 && min <= 30) document.getElementById('cl5').className = "current_class";
-            else if (hour === 12 && min >= 40) document.getElementById('cl6').className = "current_class";
-            else if (hour === 13 && min <= 25) document.getElementById('cl6').className = "current_class";
-            else if (hour === 13 && min >= 35) document.getElementById('cl7').className = "current_class";
-            else if (hour === 14 && min <= 20) document.getElementById('cl7').className = "current_class";
-            else if (hour === 14 && min >= 30) document.getElementById('cl8').className = "current_class";
-            else if (hour === 15 && min <= 15) document.getElementById('cl8').className = "current_class";
-            else if (hour === 15 && min >= 25) document.getElementById('cl9').className = "current_class";
-            else if (hour === 16 && min <= 10) document.getElementById('cl9').className = "current_class";
-            else if (hour === 16 && min >= 20) document.getElementById('cl10').className = "current_class";
-            else if (hour === 17 && min <= 5) document.getElementById('cl10').className = "current_class";
-            else if (hour === 17 && min >= 15) document.getElementById('cl11').className = "current_class";
-            else if (hour === 18 && min >= 10 && min <= 55) document.getElementById('cl12').className = "current_class";
-            else if (hour === 19 && min >= 5 && min <= 50) document.getElementById('cl13').className = "current_class";
-            else if (hour === 20 && min <= 45) document.getElementById('cl14').className = "current_class";
-            else if (hour === 20 && min >= 55) document.getElementById('cl15').className = "current_class";
-            else if (hour === 21 && min <= 40) document.getElementById('cl15').className = "current_class";
+        const times = [
+            { id: 'cl1', start: '08:00', end: '08:45' },
+            { id: 'cl2', start: '08:55', end: '09:40' },
+            { id: 'cl3', start: '09:55', end: '10:40' },
+            { id: 'cl4', start: '10:50', end: '11:35' },
+            { id: 'cl5', start: '11:45', end: '12:30' },
+            { id: 'cl6', start: '12:40', end: '13:25' },
+            { id: 'cl7', start: '13:35', end: '14:20' },
+            { id: 'cl8', start: '14:30', end: '15:15' },
+            { id: 'cl9', start: '15:25', end: '16:10' },
+            { id: 'cl10', start: '16:20', end: '17:05' },
+            { id: 'cl11', start: '17:15', end: '18:00' },
+            { id: 'cl12', start: '18:10', end: '18:55' },
+            { id: 'cl13', start: '19:05', end: '19:50' },
+            { id: 'cl14', start: '20:00', end: '20:45' },
+            { id: 'cl15', start: '20:55', end: '21:40' }
+        ];
+
+        function highlightCurrent() {
+            const now = new Date();
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+
+            times.forEach(t => {
+                const el = document.getElementById(t.id);
+                if (!el) return;
+
+                const [startH, startM] = t.start.split(':').map(Number);
+                const [endH, endM] = t.end.split(':').map(Number);
+                const start = startH * 60 + startM;
+                const end = endH * 60 + endM;
+
+                if (currentTime >= start && currentTime <= end) {
+                    el.classList.add('current');
+                } else {
+                    el.classList.remove('current');
+                }
+            });
         }
-        updateCurrentClass();
-        setInterval(updateCurrentClass, 1000);
+
+        highlightCurrent();
+        setInterval(highlightCurrent, 60000);
     </script>
 </body>
 </html>

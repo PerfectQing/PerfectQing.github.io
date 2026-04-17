@@ -1,136 +1,491 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendar</title>
-    <link rel="stylesheet" href="style/style.css">
-	<link rel="icon" href="style/images/home.png">
+    <link rel="icon" href="style/images/home.png">
     <style>
-        .calendar {
-            width: 300px;
-            height: 360px;
-            margin: 100px auto;
-            background-color: #59ACFF;
-            text-align: center;
-            color: #C1DBF5;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+        
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #09090b;
+            --surface: #131316;
+            --surface-hover: #1a1a1f;
+            --border: rgba(255, 255, 255, 0.05);
+            --border-hover: rgba(255, 255, 255, 0.1);
+            --text: #fafafa;
+            --text-secondary: rgba(255, 255, 255, 0.55);
+            --text-muted: rgba(255, 255, 255, 0.3);
         }
-        .calendar p {
-            color: #ffffff;
-            font: 400 18px/80px "微软雅黑";
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        #nowdate {
-            display: block;
-            height: 100px;
-            width: 100%;
-            background-color: #FF9600;
-            text-align: center;
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            letter-spacing: -0.01em;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 100;
+            background: rgba(9, 9, 11, 0.6);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo span {
+            width: 6px;
+            height: 6px;
+            background: var(--text);
+            border-radius: 50%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 6px;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 450;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-links a:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
+        .nav-links a.active { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+
+        main {
+            padding: 140px 40px 100px;
+            max-width: 900px;
             margin: 0 auto;
-            font: 700 60px/100px "微软雅黑";
-            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
         }
-        .calendar strong {
-            margin: 20px auto;
-            padding: 5px;
-            display: block;
-            width: 250px;
-            height: 40px;
-            color: #ffffff;
-            font: 500 20px/26px "微软雅黑";
-            border-top: dashed 1px #ffffff;
+
+        /* Hero */
+        .hero {
+            text-align: center;
         }
-        #time {
-            color: #ffffff;
-            font: 500 20px/40px "微软雅黑";
+
+        .hero-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 24px;
+        }
+
+        .hero-date {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(100px, 18vw, 200px);
+            font-weight: 700;
+            letter-spacing: -0.06em;
+            line-height: 0.85;
+            margin-bottom: 16px;
+        }
+
+        .hero-full-date {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        /* Quote */
+        .quote-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px 32px;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .quote-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-style: italic;
+        }
+
+        /* Countdown */
+        .countdown-section {
+            text-align: center;
+        }
+
+        .countdown-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
+        }
+
+        .countdown {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .countdown .sep {
+            color: var(--text-muted);
+            margin: 0 4px;
+            font-size: 32px;
+        }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* Full Calendar */
+        .calendar-section {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .calendar-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .calendar-nav button {
+            width: 32px;
+            height: 32px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .calendar-nav button:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-hover);
+            color: var(--text);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .calendar-weekday {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 12px 0;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .calendar-day:hover {
+            background: var(--surface);
+        }
+
+        .calendar-day.today {
+            background: var(--text);
+            color: var(--bg);
+            font-weight: 600;
+        }
+
+        .calendar-day.other-month {
+            color: var(--text-muted);
+        }
+
+        footer {
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 640px) {
+            nav { padding: 0 16px; }
+            main { padding: 100px 16px 40px; }
+            .nav-links { display: none; }
+            .hero-date { font-size: 80px; }
+            .countdown { font-size: 32px; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
-    <script>
-        window.onload = function () {
-            //当前年月日ID
-            var fulldate = document.getElementById("fulldate");
-            //当前日  ID
-            var nowdate = document.getElementById("nowdate");
-            //倒计时ID
-            var time = document.getElementById("time");
-            //问候语ID
-            var hllo = document.getElementById("hllo");
-
-            //获取现在的年月日小时
-            var fullTime = new Date();
-            var year = fullTime.getFullYear();//年
-            var month = fullTime.getMonth();//月
-            var date = fullTime.getDate();//日
-            var hours = fullTime.getHours();//小时
-            var dayArr = [ "星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
-            //设置年月日
-            fulldate.innerHTML = year+" 年 "+(month+1)+" 月 "+date+" 日  "+dayArr[fullTime.getDay()];
-            //设置当前日
-            nowdate.innerHTML = date;
-            
-            //名言数组
-            var hlloarr = [
-                "只有登上山顶，才能看到那边的风光",
-                "山路曲折盘旋，但毕竟朝着顶峰延伸",
-                "勤奋是你生命的密码，能译出你一部壮丽的史诗",
-                "左右一个人成功的，不是能力，而是选择",
-                "我们这个世界，从不会给一个伤心的落伍者颁发奖牌",
-                "没有天生的信心，只有不断培养的信心",
-                "每一发奋努力的背后，必有加倍的赏赐",
-                "不要等待机会，而要创造机会",
-                "含泪播种的人一定能含笑收获",
-                "让信念坚持下去，梦想就会实现",
-                "不要给自己的失败找借口",
-                "要学会新东西，要不断进步，就必须放低自己的姿势"
-            ];
-            //当前时间段默认的名言
-            hllo.innerHTML = hlloarr[parseInt(hours/2)];
-
-
-            var endTime = new Date(year,month,date,23,59,59);//获取未来结束的时间
-            setInterval(fun,1000);//开启定时器
-            function fun() {
-                var newTime = new Date();//得到最新的时间
-                var ms = parseInt((endTime - newTime) / 1000); //得到毫秒，并取整
-                var s = parseInt(ms % 60);//秒
-                var m = parseInt((ms / 60) % 60); //分
-                var h = parseInt((ms / 3600) % 24);//小时
-                //var d = parseInt((ms / 3600) / 24);//天
-
-                s<10? s="0"+s:s;
-                m<10? m="0"+m:m;
-                h<10? h="0"+h:h;
-                //d<10? d="0"+d:d;
-                time.innerHTML = h +" 时 "+m+" 分 "+s+" 秒 ";
-                //每60秒切换一次名言
-                if(s == 0 ){
-                    hllo.innerHTML = hlloarr[parseInt(m%12)];
-                }
-
-
-            }
-        }
-    </script>
 </head>
-
-
 <body>
-    <div class="header">
-        <ul>
-            <li><a href="index.html">主页</a></li>
-            <li><a href="task.html">任务清单</a></li>
-            <li class="active"><a href="calendar.html">日历</a></li>
-            <li><a href="color.html">调色板</a></li>
-            <li>联系我</li>
-            <li><a href="oldindex.html">旧主页</a></li>
-        </ul>
-    </div>
-    
-    <div class="calendar">
-        <p id="fulldate"></p>
-        <span id="nowdate"></span>
-        <strong id="hllo"></strong>
-        <span>----- 今天的余额 -----</span>
-        <div id="time"></div>
-    </div>
+    <nav>
+        <a href="index.html" class="nav-logo"><span></span>Dashboard</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="calendar.html" class="active">Calendar</a>
+            <a href="color.html">Colors</a>
+            <a href="task.html">Tasks</a>
+            <a href="MyTime/school_table.html">Schedule</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <p class="hero-eyebrow">Today</p>
+            <h1 class="hero-date" id="day-number">--</h1>
+            <p class="hero-full-date" id="full-date">Loading...</p>
+        </section>
+
+        <div class="quote-card">
+            <p class="quote-text" id="quote">Loading...</p>
+        </div>
+
+        <section class="countdown-section">
+            <p class="countdown-label">Time Remaining Today</p>
+            <div class="countdown" id="countdown">00<span class="sep">:</span>00<span class="sep">:</span>00</div>
+        </section>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="week-number">--</div>
+                <div class="stat-label">Week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="day-of-year">--</div>
+                <div class="stat-label">Day of Year</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="days-left">--</div>
+                <div class="stat-label">Days Left</div>
+            </div>
+        </div>
+
+        <section class="calendar-section">
+            <div class="calendar-header">
+                <h2 class="calendar-title" id="calendar-title">Month 2024</h2>
+                <div class="calendar-nav">
+                    <button onclick="changeMonth(-1)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <button onclick="changeMonth(1)">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p class="footer-text">Built with precision</p>
+    </footer>
+
+    <script>
+        const quotes = [
+            "只有登上山顶，才能看到那边的风光",
+            "山路曲折盘旋，但毕竟朝着顶峰延伸",
+            "勤奋是你生命的密码，能译出你一部壮丽的史诗",
+            "左右一个人成功的，不是能力，而是选择",
+            "我们这个世界，从不会给一个伤心的落伍者颁发奖牌",
+            "没有天生的信心，只有不断培养的信心",
+            "每一发奋努力的背后，必有加倍的赏赐",
+            "不要等待机会，而要创造机会",
+            "含泪播种的人一定能含笑收获",
+            "让信念坚持下去，梦想就会实现",
+            "不要给自己的失败找借口",
+            "要学会新东西，要不断进步，就必须放低自己的姿势"
+        ];
+
+        const dayArr = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+        const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        function init() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            const date = now.getDate();
+            const hours = now.getHours();
+
+            document.getElementById('day-number').textContent = date;
+            document.getElementById('full-date').textContent = `${year} 年 ${month + 1} 月 ${date} 日  ${dayArr[now.getDay()]}`;
+            document.getElementById('quote').textContent = quotes[Math.floor(hours / 2)];
+
+            const startOfYear = new Date(year, 0, 1);
+            const days = Math.floor((now - startOfYear) / (24 * 60 * 60 * 1000));
+            document.getElementById('week-number').textContent = Math.ceil((days + startOfYear.getDay() + 1) / 7);
+            document.getElementById('day-of-year').textContent = days + 1;
+
+            const endOfYear = new Date(year, 11, 31);
+            document.getElementById('days-left').textContent = Math.ceil((endOfYear - now) / (24 * 60 * 60 * 1000));
+            
+            renderCalendar();
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+            const ms = Math.max(0, endOfDay - now);
+
+            const h = String(Math.floor(ms / (1000 * 60 * 60))).padStart(2, '0');
+            const m = String(Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+            const s = String(Math.floor((ms % (1000 * 60)) / 1000)).padStart(2, '0');
+
+            document.getElementById('countdown').innerHTML = `${h}<span class="sep">:</span>${m}<span class="sep">:</span>${s}`;
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid');
+            const today = new Date();
+            
+            document.getElementById('calendar-title').textContent = `${months[currentMonth]} ${currentYear}`;
+            
+            let html = weekdays.map(d => `<div class="calendar-weekday">${d}</div>`).join('');
+            
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const prevLastDay = new Date(currentYear, currentMonth, 0);
+            
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                const day = prevLastDay.getDate() - firstDay.getDay() + i + 1;
+                html += `<div class="calendar-day other-month">${day}</div>`;
+            }
+            
+            for (let d = 1; d <= lastDay.getDate(); d++) {
+                const isToday = d === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
+                html += `<div class="calendar-day${isToday ? ' today' : ''}">${d}</div>`;
+            }
+            
+            const remaining = 42 - (firstDay.getDay() + lastDay.getDate());
+            for (let i = 1; i <= remaining; i++) {
+                html += `<div class="calendar-day other-month">${i}</div>`;
+            }
+            
+            grid.innerHTML = html;
+        }
+
+        function changeMonth(delta) {
+            currentMonth += delta;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar();
+        }
+
+        init();
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
 </body>
 </html>

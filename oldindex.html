@@ -1,111 +1,404 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PerfectQing</title>
-    <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/oldstyle.css">
+    <title>Archive</title>
+    <link rel="icon" href="style/images/home.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+        
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #09090b;
+            --surface: #131316;
+            --surface-hover: #1a1a1f;
+            --border: rgba(255, 255, 255, 0.05);
+            --border-hover: rgba(255, 255, 255, 0.1);
+            --text: #fafafa;
+            --text-secondary: rgba(255, 255, 255, 0.55);
+            --text-muted: rgba(255, 255, 255, 0.3);
+        }
+
+        html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            letter-spacing: -0.01em;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.025;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 100;
+            background: rgba(9, 9, 11, 0.6);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo span { width: 6px; height: 6px; background: var(--text); border-radius: 50%; }
+
+        .nav-links { display: flex; gap: 6px; }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 450;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-links a:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
+        .nav-links a.active { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+
+        main {
+            padding: 140px 40px 100px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 24px;
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(40px, 8vw, 64px);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .hero-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 400px;
+            margin: 0 auto 60px;
+        }
+
+        /* Date widget */
+        .date-widget {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 280px;
+            margin: 0 auto 48px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .date-widget:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .date-weekday {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        .date-day {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 80px;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        .date-full {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 16px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .date-widget:hover .date-full {
+            opacity: 1;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-hover);
+            color: var(--text);
+        }
+
+        .btn.active {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--border-hover);
+            color: var(--text);
+        }
+
+        /* Color palette */
+        .palette {
+            display: none;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 48px;
+        }
+
+        .palette.show {
+            display: flex;
+        }
+
+        .color-swatch {
+            width: 100px;
+            height: 64px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.08);
+        }
+
+        .color-swatch .name {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .color-swatch .hex {
+            opacity: 0.8;
+        }
+
+        /* Music */
+        .music-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        .music-title {
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .music-card iframe {
+            border-radius: 8px;
+            width: 100%;
+            max-width: 330px;
+        }
+
+        footer {
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            margin-top: 80px;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 640px) {
+            nav { padding: 0 16px; }
+            main { padding: 100px 16px 40px; }
+            .nav-links { display: none; }
+            .date-day { font-size: 56px; }
+        }
+    </style>
 </head>
-
 <body>
-    <div class="header">
-        <ul>
-            <li><a href="index.html">主页</a></li>
-            <li><a href="task.html">任务清单</a></li>
-            <li><a href="calendar.html">日历</a></li>
-            <li><a href="color.html">调色板</a></li>
-            <li>联系我</li>
-            <li class="active"><a href="oldindex.html">旧主页</a></li>
-        </ul>
-    </div>
-    <div class="welcome">
-        <p>Welcome to my GitHub</p>
-    </div>
-    <div class="date" onclick="show()">
-        <div class="rect">
-            <div id="sd" class="day">
-                星期日
-            </div>
-            <div class="ssday" id="nd">
-                1
-            </div>
+    <nav>
+        <a href="index.html" class="nav-logo"><span></span>Dashboard</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="color.html">Colors</a>
+            <a href="task.html">Tasks</a>
+            <a href="oldindex.html" class="active">Archive</a>
         </div>
-    </div>
-    <div class="Today" id="td">
+    </nav>
 
-    </div>
-    <div class="bt">
-        <button onclick="change()"><span>切换背景</span></button>
-    </div>
-    <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=450 src="//music.163.com/outchain/player?type=0&id=384744072&auto=1&height=430"></iframe></div>
-    <div class="bt">
-        <button onclick="showcolor()"><span>常用色彩板</span></button>
-    </div>
+    <main>
+        <p class="hero-eyebrow">Legacy</p>
+        <h1 class="hero-title">Welcome</h1>
+        <p class="hero-desc">Archived version of the original homepage with classic features preserved.</p>
 
-    <div id="colors" onload="hide()" class="colors">
-        <div style="color: white; background-color: #7bbfea;width: 100%; height: 45px;text-align: center;">
-            勿忘草色</br>#7bbfea
+        <div class="date-widget" onclick="toggleFullDate()">
+            <p class="date-weekday" id="weekday">Loading...</p>
+            <p class="date-day" id="day-number">--</p>
+            <p class="date-full" id="full-date"></p>
         </div>
-        <div style="color: white; background-color: #33aedc;width: 100%; height: 45px;text-align: center;">
-            露草色</br>#33aedc
+
+        <div class="controls">
+            <button class="btn" onclick="changeBackground()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                Background
+            </button>
+            <button class="btn" id="palette-btn" onclick="togglePalette()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20"/></svg>
+                Palette
+            </button>
         </div>
-        <div style="color: white; background-color: #228fbd;width: 100%; height: 45px;text-align: center;">
-            缥色</br>#228fbd
+
+        <div class="palette" id="palette">
+            <div class="color-swatch" style="background: #7bbfea; color: #000" onclick="copyColor('#7bbfea')">
+                <span class="name">勿忘草色</span>
+                <span class="hex">#7bbfea</span>
+            </div>
+            <div class="color-swatch" style="background: #33aedc; color: #fff" onclick="copyColor('#33aedc')">
+                <span class="name">露草色</span>
+                <span class="hex">#33aedc</span>
+            </div>
+            <div class="color-swatch" style="background: #228fbd; color: #fff" onclick="copyColor('#228fbd')">
+                <span class="name">缥色</span>
+                <span class="hex">#228fbd</span>
+            </div>
+            <div class="color-swatch" style="background: #2468a2; color: #fff" onclick="copyColor('#2468a2')">
+                <span class="name">浅缥</span>
+                <span class="hex">#2468a2</span>
+            </div>
+            <div class="color-swatch" style="background: #f0a0a4; color: #000" onclick="copyColor('#f0a0a4')">
+                <span class="name">薄紅</span>
+                <span class="hex">#f0a0a4</span>
+            </div>
+            <div class="color-swatch" style="background: #b7282e; color: #fff" onclick="copyColor('#b7282e')">
+                <span class="name">茜色</span>
+                <span class="hex">#b7282e</span>
+            </div>
         </div>
-        <div style="color: white; background-color: #2468a2;width: 100%; height: 45px;text-align: center;">
-            浅缥</br>#2468a2
+
+        <div class="music-card">
+            <p class="music-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/><path d="M8 17V5l12-2v12"/></svg>
+                Music Player
+            </p>
+            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="450" src="//music.163.com/outchain/player?type=0&id=384744072&auto=0&height=430"></iframe>
         </div>
-        <div style="color: white; background-color: #2570a1;width: 100%; height: 45px;text-align: center;">
-            薄缥</br>#2570a1
-        </div>
-        <div style="color: white; background-color: #2585a6;width: 100%; height: 45px;text-align: center;">
-            薄花色</br>#2585a6
-        </div>
-    </div>
+    </main>
+
+    <footer>
+        <p class="footer-text">Built with precision</p>
+    </footer>
+
     <script>
-        // function hide(){
-        //     document.getElementById("colors").style="display:none";
-        // }
-
-
-
-        var day = new Date().getDay();
-        var sd;
-        switch (day) {
-            case 1: sd = "星期一"; break;
-            case 2: sd = "星期二"; break;
-            case 3: sd = "星期三"; break;
-            case 4: sd = "星期四"; break;
-            case 5: sd = "星期五"; break;
-            case 6: sd = "星期六"; break;
-            case 0: sd = "星期日"; break;
+        const weekdays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+        
+        function updateDate() {
+            const now = new Date();
+            document.getElementById('weekday').textContent = weekdays[now.getDay()];
+            document.getElementById('day-number').textContent = now.getDate();
+            document.getElementById('full-date').textContent = now.toLocaleString('zh-CN');
         }
-        document.getElementById("sd").innerHTML = sd;
-        document.getElementById("nd").innerHTML = new Date().getDate();
-        function show() {
-            setInterval(() => {
-                document.getElementById("td").innerHTML = new Date();
-            }, 500);
-        }
-        var str1 = "1.jpg";
-        var str2 = "2.jpg";
-        var i = 1;
+        
+        updateDate();
+        setInterval(updateDate, 1000);
 
-        function change() {
-            i *= -1;
-            if (i == -1) document.body.style = "background-image: url(" + str1 + ");";
-            if (i == 1) document.body.style = "background-image: url(" + str2 + ");";
+        function toggleFullDate() {
+            const el = document.getElementById('full-date');
+            el.style.opacity = el.style.opacity === '1' ? '0' : '1';
         }
 
-        function showcolor() {
-            i *= -1;
-            if (i == -1) document.getElementById("colors").style = "margin: 20px 0;display: flex;flex-direction: column;";
-            if (i == 1) document.getElementById("colors").style = "display: none";
+        let bgIndex = 0;
+        const backgrounds = [
+            '#09090b',
+            '#0f0f1a',
+            '#0a1628'
+        ];
+
+        function changeBackground() {
+            bgIndex = (bgIndex + 1) % backgrounds.length;
+            document.body.style.setProperty('--bg', backgrounds[bgIndex]);
+        }
+
+        function togglePalette() {
+            const palette = document.getElementById('palette');
+            const btn = document.getElementById('palette-btn');
+            palette.classList.toggle('show');
+            btn.classList.toggle('active');
+        }
+
+        function copyColor(hex) {
+            navigator.clipboard.writeText(hex).then(() => {
+                alert(`Copied: ${hex}`);
+            });
         }
     </script>
 </body>
-
 </html>
