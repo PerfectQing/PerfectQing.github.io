@@ -1,111 +1,475 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PerfectQing</title>
-    <link rel="stylesheet" href="style/style.css">
-    <link rel="stylesheet" href="style/oldstyle.css">
+    <title>Archive — PerfectQing</title>
+    <link rel="icon" href="style/images/home.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #111113;
+            --bg-tertiary: #18181b;
+            --bg-card: rgba(24, 24, 27, 0.6);
+            --bg-card-hover: rgba(39, 39, 42, 0.8);
+            --border-primary: rgba(63, 63, 70, 0.4);
+            --border-hover: rgba(99, 102, 241, 0.5);
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #71717a;
+            --accent: #6366f1;
+            --accent-light: #818cf8;
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --success: #22c55e;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border-primary);
+            backdrop-filter: blur(12px);
+            background: rgba(10, 10, 11, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, var(--accent) 0%, #8b5cf6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: white;
+        }
+
+        .brand-text h1 { font-size: 18px; font-weight: 600; }
+        .brand-text p { font-size: 13px; color: var(--text-tertiary); }
+
+        /* Navigation */
+        nav { padding: 20px 0; }
+
+        nav ul {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 9999px;
+            border: 1px solid transparent;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+            background: var(--bg-tertiary);
+            border-color: var(--border-primary);
+        }
+
+        nav a.active {
+            color: var(--accent-light);
+            background: var(--accent-glow);
+            border-color: var(--border-hover);
+        }
+
+        /* Main */
+        main {
+            padding: 48px 0 80px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 64px 0;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            font-weight: 600;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 18px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Date Widget */
+        .date-widget {
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius);
+            padding: 32px;
+            text-align: center;
+            margin: 48px auto;
+            max-width: 280px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .date-widget:hover {
+            border-color: var(--border-hover);
+            transform: scale(1.02);
+        }
+
+        .date-widget .weekday {
+            font-size: 14px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .date-widget .day {
+            font-size: 72px;
+            font-weight: 700;
+            line-height: 1;
+            color: var(--accent-light);
+        }
+
+        .date-widget .full-date {
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--text-tertiary);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .date-widget:hover .full-date {
+            opacity: 1;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 32px 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 9999px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            color: var(--text-primary);
+        }
+
+        .btn.active {
+            background: var(--accent-glow);
+            border-color: var(--accent);
+            color: var(--accent-light);
+        }
+
+        /* Music Player */
+        .music-section {
+            margin: 48px 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius);
+            padding: 24px;
+        }
+
+        .music-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-section iframe {
+            border-radius: var(--radius-sm);
+            width: 100%;
+            max-width: 330px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Color Palette */
+        .color-palette {
+            display: none;
+            margin-top: 32px;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .color-palette.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .color-swatch {
+            width: 120px;
+            height: 80px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.05);
+        }
+
+        .color-swatch span {
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 32px 0;
+            border-top: 1px solid var(--border-primary);
+            text-align: center;
+        }
+
+        .footer a {
+            color: var(--text-tertiary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .footer a:hover {
+            color: var(--accent-light);
+        }
+
+        @media (max-width: 640px) {
+            .hero h2 { font-size: 32px; }
+            .date-widget .day { font-size: 56px; }
+        }
+    </style>
 </head>
-
 <body>
-    <div class="header">
-        <ul>
-            <li><a href="index.html">主页</a></li>
-            <li><a href="task.html">任务清单</a></li>
-            <li><a href="calendar.html">日历</a></li>
-            <li><a href="color.html">调色板</a></li>
-            <li>联系我</li>
-            <li class="active"><a href="oldindex.html">旧主页</a></li>
-        </ul>
-    </div>
-    <div class="welcome">
-        <p>Welcome to my GitHub</p>
-    </div>
-    <div class="date" onclick="show()">
-        <div class="rect">
-            <div id="sd" class="day">
-                星期日
-            </div>
-            <div class="ssday" id="nd">
-                1
+    <header class="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="brand">
+                    <div class="logo">PQ</div>
+                    <div class="brand-text">
+                        <h1>PerfectQing</h1>
+                        <p>Archive</p>
+                    </div>
+                </a>
             </div>
         </div>
-    </div>
-    <div class="Today" id="td">
+    </header>
 
-    </div>
-    <div class="bt">
-        <button onclick="change()"><span>切换背景</span></button>
-    </div>
-    <div>
-        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=450 src="//music.163.com/outchain/player?type=0&id=384744072&auto=1&height=430"></iframe></div>
-    <div class="bt">
-        <button onclick="showcolor()"><span>常用色彩板</span></button>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="calendar.html">Calendar</a></li>
+                <li><a href="task.html">Tasks</a></li>
+                <li><a href="color.html">Colors</a></li>
+                <li><a href="MyTime/school_table.html">Schedule</a></li>
+                <li><a href="oldindex.html" class="active">Archive</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section class="hero">
+                <h2>Welcome to my GitHub</h2>
+                <p>This is the archived version of the original homepage with classic features.</p>
+            </section>
+
+            <div class="date-widget" onclick="showFullDate()">
+                <div class="weekday" id="weekday">Loading...</div>
+                <div class="day" id="day-number">--</div>
+                <div class="full-date" id="full-date-text"></div>
+            </div>
+
+            <div class="controls">
+                <button class="btn" onclick="changeBackground()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    Switch Background
+                </button>
+                <button class="btn" id="palette-btn" onclick="togglePalette()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"></circle><circle cx="6.5" cy="13.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>
+                    Color Palette
+                </button>
+            </div>
+
+            <div class="color-palette" id="color-palette">
+                <div class="color-swatch" style="background: #7bbfea; color: white;" onclick="copyColor('#7bbfea')">
+                    <span>勿忘草色</span>
+                    <span>#7bbfea</span>
+                </div>
+                <div class="color-swatch" style="background: #33aedc; color: white;" onclick="copyColor('#33aedc')">
+                    <span>露草色</span>
+                    <span>#33aedc</span>
+                </div>
+                <div class="color-swatch" style="background: #228fbd; color: white;" onclick="copyColor('#228fbd')">
+                    <span>缥色</span>
+                    <span>#228fbd</span>
+                </div>
+                <div class="color-swatch" style="background: #2468a2; color: white;" onclick="copyColor('#2468a2')">
+                    <span>浅缥</span>
+                    <span>#2468a2</span>
+                </div>
+                <div class="color-swatch" style="background: #2570a1; color: white;" onclick="copyColor('#2570a1')">
+                    <span>薄缥</span>
+                    <span>#2570a1</span>
+                </div>
+                <div class="color-swatch" style="background: #2585a6; color: white;" onclick="copyColor('#2585a6')">
+                    <span>薄花色</span>
+                    <span>#2585a6</span>
+                </div>
+            </div>
+
+            <section class="music-section">
+                <h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.5" cy="17.5" r="2.5"></circle><circle cx="17.5" cy="15.5" r="2.5"></circle><path d="M8 17V5l12-2v12"></path></svg>
+                    Music Player
+                </h3>
+                <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="450" src="//music.163.com/outchain/player?type=0&id=384744072&auto=0&height=430"></iframe>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <a href="https://github.com/PerfectQing/PerfectQing.github.io" target="_blank">
+                GitHub: PerfectQing/PerfectQing.github.io
+            </a>
+        </footer>
     </div>
 
-    <div id="colors" onload="hide()" class="colors">
-        <div style="color: white; background-color: #7bbfea;width: 100%; height: 45px;text-align: center;">
-            勿忘草色</br>#7bbfea
-        </div>
-        <div style="color: white; background-color: #33aedc;width: 100%; height: 45px;text-align: center;">
-            露草色</br>#33aedc
-        </div>
-        <div style="color: white; background-color: #228fbd;width: 100%; height: 45px;text-align: center;">
-            缥色</br>#228fbd
-        </div>
-        <div style="color: white; background-color: #2468a2;width: 100%; height: 45px;text-align: center;">
-            浅缥</br>#2468a2
-        </div>
-        <div style="color: white; background-color: #2570a1;width: 100%; height: 45px;text-align: center;">
-            薄缥</br>#2570a1
-        </div>
-        <div style="color: white; background-color: #2585a6;width: 100%; height: 45px;text-align: center;">
-            薄花色</br>#2585a6
-        </div>
-    </div>
     <script>
-        // function hide(){
-        //     document.getElementById("colors").style="display:none";
-        // }
-
-
-
-        var day = new Date().getDay();
-        var sd;
-        switch (day) {
-            case 1: sd = "星期一"; break;
-            case 2: sd = "星期二"; break;
-            case 3: sd = "星期三"; break;
-            case 4: sd = "星期四"; break;
-            case 5: sd = "星期五"; break;
-            case 6: sd = "星期六"; break;
-            case 0: sd = "星期日"; break;
+        const weekdays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+        
+        function updateDate() {
+            const now = new Date();
+            document.getElementById('weekday').textContent = weekdays[now.getDay()];
+            document.getElementById('day-number').textContent = now.getDate();
+            document.getElementById('full-date-text').textContent = now.toLocaleString('zh-CN');
         }
-        document.getElementById("sd").innerHTML = sd;
-        document.getElementById("nd").innerHTML = new Date().getDate();
-        function show() {
-            setInterval(() => {
-                document.getElementById("td").innerHTML = new Date();
-            }, 500);
-        }
-        var str1 = "1.jpg";
-        var str2 = "2.jpg";
-        var i = 1;
+        
+        updateDate();
+        setInterval(updateDate, 1000);
 
-        function change() {
-            i *= -1;
-            if (i == -1) document.body.style = "background-image: url(" + str1 + ");";
-            if (i == 1) document.body.style = "background-image: url(" + str2 + ");";
+        function showFullDate() {
+            const el = document.getElementById('full-date-text');
+            el.style.opacity = el.style.opacity === '1' ? '0' : '1';
         }
 
-        function showcolor() {
-            i *= -1;
-            if (i == -1) document.getElementById("colors").style = "margin: 20px 0;display: flex;flex-direction: column;";
-            if (i == 1) document.getElementById("colors").style = "display: none";
+        let bgIndex = 0;
+        const backgrounds = [
+            'var(--bg-primary)',
+            'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+            'linear-gradient(135deg, #0f0f23 0%, #1a1a3a 100%)'
+        ];
+
+        function changeBackground() {
+            bgIndex = (bgIndex + 1) % backgrounds.length;
+            document.body.style.background = backgrounds[bgIndex];
+        }
+
+        function togglePalette() {
+            const palette = document.getElementById('color-palette');
+            const btn = document.getElementById('palette-btn');
+            palette.classList.toggle('show');
+            btn.classList.toggle('active');
+        }
+
+        function copyColor(hex) {
+            navigator.clipboard.writeText(hex).then(() => {
+                alert(`Copied: ${hex}`);
+            });
         }
     </script>
 </body>
-
 </html>
